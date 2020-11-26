@@ -10,7 +10,7 @@ router.get('/', async(req, response) => {
   let num = req.query.num || 5
 
   try {
-    let { results } = await query(`select _id as id,mname,price,time,shopname,scanteen as canteen from (shop_order left join shopkeeper on shop_order.sid=shopkeeper.sid) where uid=${uid} order by time desc limit ${(page-1)*num}, ${num}`)
+    let { results } = await query(`select shop_order.sid,_id as id,mname,price,time,shopname,scanteen as canteen from (shop_order left join shopkeeper on shop_order.sid=shopkeeper.sid) where uid=${uid} order by time desc limit ${(page-1)*num}, ${num}`)
     results.forEach(item => {
       let time = new Date(item.time)
       item.time = time.toLocaleString('chinese', { hour12:false })

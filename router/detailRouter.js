@@ -15,7 +15,7 @@ const commentStorage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname))
   }
 })
-const commentUpload = multer({ storage: commentStorage, limits: { fileSize: 5242880 } })
+const commentUpload = multer({ storage: commentStorage, limits: { fileSize: 50*1024*1024 } })
 
 router.get('/', async(req, response) => {
   /**
@@ -41,11 +41,9 @@ router.post('/collect', async(req, response) => {
   try {
     query(`insert into user_like(uid,sid) values(${uid}, ${sid})`)
     .then(val => {
-      log(1111111)
       response.send('1')
     })
     .catch(err => {
-      log(222222)
       response.statusCode = 400
       response.send('0') // 重复操作
     })
@@ -56,37 +54,33 @@ router.post('/collect', async(req, response) => {
   }
 })
 
-router.post('/like', urlencoded, async(req, response) => {
+router.post('/like', async(req, response) => {
   /**
    * 点整功能
    * 参数：	uid=xxx & sid=xxxxlike=true|false&  商家ID
-   * 附带:  符合要求后 修改商家表中的 slikenum字段  
+   * 附带:  符合要求后 修改商家表中的 slikenum字段      这样 耦合度高了.  我怕修改了这个, 影响了其他的了
   */
-  let sid = req.body.sid 
-  let uid = req.body.uid 
-  let like = req.body.like
+  let sid = req.query.sid 
+  let uid = req.query.uid 
+  let like = req.query.like
 
   try {
     if (like === 'true') {
       await query(`insert into shop_like(sid,uid) values(${sid}, ${uid})`)
-      response.send('ok')
-      query(`update shopkeeper set slikenum=slikenum+1 where sid=${sid}`)
-
+      response.send('1')
     } else {
       let { results } = await query(`delete from shop_like where sid=${sid} and uid=${uid}`)
       if (results.affectedRows > 0) {
-        query(`update shopkeeper set slikenum=slikenum-1 where sid=${sid}`)
-        response.send('ok')
+        response.send('1')
       } else {
-        response.send('无效操作')
+        response.send('0')
       }
-      
     }
   } catch(err) {
     // console.log('------------------------此处有误' ,err)
     response.statusCode = 400
     response.statusMessage = 'error'
-    response.send('error')
+    response.send('0')
   }
 })
 
@@ -97,22 +91,25 @@ router.get('/top', async(req, response) => {
   */
   let sid = req.query.sid
   let uid = req.query.uid
-
   try {
-    let shopPromise = query(`select shopname,scanteen,slogo,slikenum from shopkeeper where sid=${sid}`)   
+    
+    let shopPromise = query(`select shopname,scanteen,slogo,likenum from (shopkeeper left join (select sid,count(*) as likenum from shop_like group by sid) as shoplike on shopkeeper.sid=shoplike.sid) where shopkeeper.sid=${sid}`)   
     let showPromise = query(`select img from shop_show where sid=${sid}`) 
     let commentPromise = query(`select avg(score) as avgscore,count(*) as count from shop_comment where sid=${sid}`)
-    let likePromise = query(`select sid from shop_like where sid=${sid} and uid=${uid}`)
-    let collectPromise = query(`select uid from user_like where sid=${sid} and uid=${uid}`)
+    let likePromise, collectPromise
     if (!uid) { // 没有uid参数时
       likePromise = Promise.resolve({results: []})
       collectPromise = Promise.resolve({results: []})
+    } else {
+      likePromise = query(`select sid from shop_like where sid=${sid} and uid=${uid}`)
+      collectPromise = query(`select uid from user_like where sid=${sid} and uid=${uid}`)
     }
     let promiseAllList = await Promise.all([
       shopPromise, showPromise,
       commentPromise, likePromise,
       collectPromise
     ])
+    
     let { shopname: shopName, scanteen: canteen, slogo: logo, slikenum: likeNum } = promiseAllList[0].results[0]   // ok
     let showList = promiseAllList[1].results.reduce((temp, item) => {
       if (item.img) {
@@ -120,14 +117,15 @@ router.get('/top', async(req, response) => {
       }
       return temp
     }, [])
+        showList.unshift(logo)
     let commentObj = promiseAllList[2].results[0]
-    let score = commentObj.avgscore.toFixed(2)
+    let score = Number(commentObj.avgscore.toFixed(2))
     let commentNum = commentObj.count
-    let isLike = promiseAllList[3].results.length > 0 ? 1:0
-    let isCollect = promiseAllList[4].results.length > 0 ? 1:0
+    let isLike = promiseAllList[3].results.length > 0 ? true : false
+    let isCollect = promiseAllList[4].results.length > 0 ? true : false
 
     response.send({
-      shopName,canteen,logo,likeNum,score,commentNum,isLike,isCollect,showList
+      shopName,canteen,likeNum,score,commentNum,isLike,isCollect,showList
     })
   } catch(err) {
     console.log('------------------------此处有误' ,err)
@@ -157,15 +155,17 @@ router.get('/menu', async(req, response) => {
   }
 })
 
-router.post('/order/add', urlencoded, async(req, response) => {
+router.post('/order/add', async(req, response) => {
   /**
    * 预定功能
-   * 参数:  uid=xxx sid=xxx mid=xxxx
+   * 参数:  uid=xxx sid=xxx mid=xxxx time=xxx
    * 方法:  POST
+   * 要求:  time 11点之前 
   */
-  let sid = req.body.sid
-  let uid = req.body.uid
-  let mid = req.body.mid
+  let sid = req.query.sid
+  let uid = req.query.uid
+  let mid = req.query.mid
+  let time = req.query.time
 
   try {
     let { results: menus } = await query(`select mname,mprice from shop_menu where mid=${mid}`)
@@ -177,19 +177,23 @@ router.post('/order/add', urlencoded, async(req, response) => {
     
     let { results } = await query(`insert into shop_order(sid,uid,mid,mname,uname,price) values(${sid},${uid},${mid},'${mname}','${uname}',${price})`)
     if (results.affectedRows > 0) {
-      response.send('预定成功')
+      response.send('1')
     } else {
-      response.sendStatus(400).send('预定失败')
+      response.statusCode = 400
+      response.send('0')
     }
     
   } catch(err) {
     console.log('------------------------此处有误' ,err)
-    response.statusCode = 400
+    response.statusCode = 500
     response.statusMessage = 'error'
-    response.send('application error')
+    response.send('-1')
   }
 })
 
+/**
+ * 一会删除掉
+*/
 router.post('/order/remove', urlencoded, async(req, response) => {
   /**
    * 取消预约。  // 一个小时之内才能 取消预约
@@ -214,27 +218,26 @@ router.post('/order/remove', urlencoded, async(req, response) => {
 
 router.get('/comment', async(req, response) => {
   let sid = req.query.sid
+  let page = req.query.page || 1
+  let num = req.query.num || 5
 
   try {
-    let { results } = await query(`select unickname,uimg,imglist,score,content,time,response from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid}`)
-    let totalNum=results.length, goodNum=0, middleNum=0, badNum=0
+    let { results } = await query(`select unickname,uimg,imglist,score,content,time,response from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid} limit ${(page-1)*num}, ${num}`)
+    let { results: counts } = await query(`select count(*) as total,sum(score>=4) as good,sum(score>=2 and score<4) as middle,sum(score>=0 and score<2) as bad from shop_comment where sid=${sid}`)
+    let { total, good, middle, bad } = counts[0]
     for (let resultRow of results) {  // 此循环是用来做 参评人数的功能
-      if (resultRow.score >= 4) {
-        goodNum++
-      } else if (resultRow.score >= 2) {
-        middleNum++
-      } else {
-        badNum++
-      }
-
-      if (resultRow.imglist.length ===2) {  // "[]"
+      if (resultRow.imglist===null || resultRow.imglist.length ===2) {  // "[]"
         resultRow.imglist = null
+      } else {
+        resultRow.imglist = JSON.parse(resultRow.imglist)
       }
       let time = resultRow.time
       resultRow.time = new Date(time).toLocaleString('chinese', { hour12: false })
     }
 
-    response.send({ totalNum, goodNum, middleNum, badNum, list: results })
+    // response.send({ total, good, middle, bad, list: results })
+    response.send(results)
+    log(results)
   } catch(err) {
     console.log('------------------------此处有误---', err)
     response.statusCode = 500
@@ -252,7 +255,7 @@ router.post('/comment', commentUpload.array('imglist', 4), async(req, response) 
     response.statusCode = 400 // 客户端操作有误
     response.send('字数过多')
   }
-  
+
   try {
     let imglist = req.files.map( item => path.posix.join('/public/img/comment', item.filename) )
       imglist = JSON.stringify(imglist)

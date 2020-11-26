@@ -72,18 +72,6 @@ router.post('/pwd', async(req, response) => {
   }
 })
 
-router.post('/exit', async(req, response) => {
-  try {
-    let uid = req.query.uid
-    //
-    response.send('退出登录成功. 即将跳转到首页'+req.ip)
-  } catch(err) {
-    log('-------有误-------', err)
-    response.statusCode = 500
-    response.send('年轻人, 不要太好奇')
-  }
-})
-
 router.get('/like', async(req, response) => {
   /**
    * 收藏列表
@@ -94,6 +82,18 @@ router.get('/like', async(req, response) => {
     response.send(results)
   } catch(err) {
     log('------此处有误-------', err) 
+    response.statusCode = 500
+    response.send('年轻人, 不要太好奇')
+  }
+})
+
+router.post('/exit', async(req, response) => {
+  try {
+    let uid = req.query.uid
+    //
+    response.send('退出登录成功. 即将跳转到首页'+req.ip)
+  } catch(err) {
+    log('-------有误-------', err)
     response.statusCode = 500
     response.send('年轻人, 不要太好奇')
   }
