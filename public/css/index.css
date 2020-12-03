@@ -1,0 +1,252 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+ul { list-style: none; }
+
+
+/* 公共样式 Start */
+:root {
+  --themeColor: #df5b2b;   /* 主题色,  商家标语就是这个颜色 */
+  --simpleColor: #666666;    /* 浅的文字颜色 */
+  --themeBg: #f8f8f8;
+
+  --middleSize: 3.466vw;
+  --smallSize: 3.2vw; /* 描述性文本  不重要的*/
+  --normalSize: 3.73vw; /* 14px */
+
+  --normalMargin: 2.666vw;   /* 10px */
+}
+.bg-white {
+  background-color: #fff;
+}
+body {
+  padding: 0 4vw !important;
+  background-color: var(--themeBg);
+}
+body .p-y {
+  padding-top: 4vw;  /* 15px  => iphone 6 */
+  padding-bottom: 4vw;
+}
+body .p-x {
+  padding-left: 2.66vw;
+  padding-right: 2.66vw;
+}
+body > div {
+  margin-top: 6.13vw;
+  margin-bottom: 6.13vw;
+}
+
+.text-weight {
+  font-weight: bold;
+}
+.radius {
+  border-radius: 5px;
+}
+.radius-big {
+  border-radius: 9px;
+}
+
+.f-lt {
+  float: left;
+}
+.f-gt {
+  float: right;
+}
+.clear-f::after {
+  content: "";
+  height: 0;
+  display: block;
+  clear: both;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.item-shadow {
+  box-shadow: 0 0 20px rgba(0,0,0,.1);
+}
+
+/* 公共样式 End */
+
+
+
+/* 热搜模块 Start */
+.hot-search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+
+  font-size: var(--middleSize);
+}
+.hot-search > .title {
+  flex: 0 0 auto;
+  padding-right: 5px;
+}
+.hot-item-row {
+  flex: 1 0 auto;
+  display: flex;
+}
+.hot-item {
+  letter-spacing: .5px;
+  margin: 0 .3em;
+  padding: .20em .65em;                     /* !!! */
+  border-radius: 100vw;                    /* !!! */
+  border: 1px solid #aaa;                /* !!! */
+}
+/* 热搜模块 End */
+
+/* 预定TOP Start */
+.reserve > .tit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.reserve-row {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+.reserve-item {
+  flex: 0 0 48%;
+  display: flex;
+  max-width: 48%;
+  
+}
+
+.reserve-item .content {
+  display: flex;
+  flex-direction: column;
+}
+.reserve-item .tit {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin-top: -.3em;
+
+
+}
+.reserve-item .slogan {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  margin-top: .3em;
+
+  font-size: var(--smallSize);
+}
+.reserve-item .price-box {
+  margin-top: auto;
+}
+
+.reserve-row img {
+  width: 90px;
+  height: 70px;
+  margin-right: var(--normalMargin);
+  border-radius: 5px;
+  object-position: center;
+  object-fit: cover;
+}
+/* 预定TOP End */
+
+
+/* 商家列表 Start */
+.shopkeeper-list {
+  padding-bottom: 49px;
+}
+.shopkeeper-item {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 15px 10px;
+  margin-top: 15px;
+}
+.shopkeeper-item + .shopkeeper-item {
+  margin-top: 15px;
+}
+.shopkeeper-item > img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+}
+.shopkeeper-item > .content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+
+  max-width: calc(100% - 100px);
+  padding-left: 15px;
+}
+.shopkeeper-item .header-row {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}.shopkeeper-item .header-row span {
+  font-size: var(--smallSize);
+  color: var(--themeColor);
+}
+.shopkeeper-item h3 {
+  max-width: calc(100% - 70px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  font-weight: 800;
+}
+
+.shopkeeper-item .score-row {
+  display: flex;
+  align-items: center;
+}
+.shopkeeper-item .score-row .score-icon {
+  margin-right: .5em;
+}
+.shopkeeper-item .position-row {
+  color: var(--simpleColor);
+  font-size: var(--middleSize);
+}
+.shopkeeper-item .slogan {
+  font-size: var(--smallSize);
+  display: inline-block;
+  padding: .1em .7em;
+  border: 1px solid #ddd;
+  border-radius: 50vw 50vw 50vw 0;             /* Hack写法 */
+
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+
+  max-width: 100%;
+  color: var(--themeColor);
+}
+/* 商家列表 End */
+
+/* Tab-Bar Start */
+.tab-bar {
+  font-size: var(--normalSize);
+
+  margin: 0;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.17);
+
+  padding: 0;
+  display: flex;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 50px;
+  background-color: #fff;
+  z-index: 10;
+
+  justify-content: space-around;
+  align-items: center;
+}
+.tab-bar > div {
+  text-align: center;
+  padding: 5px;
+}
+/* Tab-Bar End */

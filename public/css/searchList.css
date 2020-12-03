@@ -1,0 +1,88 @@
+/* 导航 - 公共样式 Start */
+.nav {
+  height: 45px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+}
+.nav > .left {
+  flex:  0 0 auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}
+.nav > .center {
+  flex: 3;
+  text-align: center;
+}
+.nav > .right {
+  flex: 0 0 auto;
+  text-align: right;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}
+/* 导航 - 公共样式 End */
+
+* 商家列表 Start */
+.shopkeeper-list {
+  padding-bottom: 49px;
+}
+.shopkeeper-item {
+  display: flex;
+  justify-content: space-between;
+
+  outline: 1px solid red;
+  padding: 10px;
+}
+.shopkeeper-item + .shopkeeper-item {
+  margin-top: 15px;
+}
+.shopkeeper-item > img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+}
+.shopkeeper-item > .content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+
+  max-width: calc(100% - 100px);
+  padding-left: 15px;
+}
+.shopkeeper-item .header-row {
+  align-self: stretch;
+}
+.shopkeeper-item h3 {
+  max-width: calc(100% - 70px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.shopkeeper-item .score-row {
+  display: flex;
+  align-items:center;
+}
+.shopkeeper-item .score-row .score-icon {
+  margin-right: .5em;
+}
+.shopkeeper-item .slogan {
+  font-size: 12px;
+  display: inline-block;
+  padding: .1em .7em;
+  border: 1px solid #ddd;
+  border-radius: 50vw 50vw 50vw 0;             /* Hack写法 */
+
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+
+  max-width: 100%;
+}
+/* 商家列表 End */

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>搜索列表</title>
+  <base href="http://127.0.0.1:2021">
+  <link rel="stylesheet" href="../public/css/public.css">
+  <link rel="stylesheet" href="../public/css/searchList.css">
+  <link rel="stylesheet" href="E:/WebTest/layUI/dist/css/layui.css">
+</head>
+<body>
+  <div class="nav">
+    <a href="/" class="left">←</a>
+    <div class="center">搜索结果</div>
+    <div class="right">刷新</div>
+  </div>
+
+  <div class="shopkeeper-list">
+  </div>
+  <script src="E:\WebTest\layUI\dist\layui.js"></script>
+  <script>
+    layui.use('flow', function() {
+      // 获取 参数 text
+      let text = new URLSearchParams(location.search).get('text')
+
+      console.log(text)
+      let $ = layui.jquery
+      let flow = layui.flow
+
+      flow.load({
+        elem: '.shopkeeper-list',
+        isAuto: true,
+        done(page, next) {
+          let lis = []
+          $.get(`http://127.0.0.1:2021/home/search?text=${text}`, data => {
+            console.log(data)
+            let lis = []
+            layui.each(data.results, (index, item) => {
+              lis.push(`
+              <a class="shopkeeper-item" href="/detail?sid=${item.sid}">
+                <img src="${item.slogo}" alt="">
+                <div class="content">
+                  <div class="header-row clear-f">
+                    <h3 class="f-lt">${item.shopname}</h3>
+                  </div>
+                  <div class="score-row">
+                    <span class="score-icon">⭐</span>
+                    <span><span class="score-num">${(item.score ?? 0).toFixed(1)}</span>分</span>
+                  </div>
+                  <div class="position-row">
+                    <span class="category">${item.content}</span>
+                    <span>&nbsp;</span>
+                    <span class="position">${item.scanteen}</span>
+                  </div>
+                  <div class="slogan">${item.slogan==='undefined'? '商家很懒,没有标语':item.slogan}</div>
+                </div>
+              </a>
+              `)
+            })
+            next(lis.join(''), page < data.pages);
+          })
+        }
+      })
+    })
+  </script>
+</body>
+</html>

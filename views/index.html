@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>河职-预定餐</title>
+  <link rel="stylesheet" href="/public/css/index.css">
+  <link rel="stylesheet" href="/public/css/layui.css">
+  <base href="http://192.168.43.128:2021">
+</head>
+<body>
+  <div class="test"></div>
+  <!-- 热搜模块 Start -->
+  <div class="hot-search">
+    <div class="title">热搜:</div>
+    <div class="hot-item-row">
+      <!-- 只限制 3个 -->
+        <!-- <div class="hot-item">川菜</div>
+        <div class="hot-item">川菜</div>
+        <div class="hot-item">很长很长的文字</div> -->
+    </div>
+  </div>
+  <!-- 热搜模块 End -->
+
+  <!--预定Top Start-->
+  <div class="reserve item-shadow p-x p-y bg-white">
+    <div class="tit-row">
+      <h2>人气榜</h2>
+      <a href="/"><span>更多</span>&nbsp;<b>→</b></a>
+    </div>
+    <br>
+    <div class="reserve-row">
+      <div class="reserve-item">
+        <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+        <div class="content">
+          <p class="tit">必胜客(龙子湖店)</p>
+          <span class="slogan">外带超值</span>
+          <span class="price-box"><span class="symbol">￥</span><b class="price">10</b></span>
+        </div>
+      </div>
+
+      <div class="reserve-item">
+        <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3281808061,454912648&fm=26&gp=0.jpg" alt="">
+        <div class="content">
+          <p class="tit">必胜客(龙子湖店)</p>
+          <span class="slogan">外带超值</span>
+          <span class="price-box"><span class="symbol">￥</span><b class="price">10</b></span>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- 预定Top End -->
+
+  <!-- 筛选 Start -->
+  <!-- <div class="shopkeeper-order">
+    <div class="shopkeeper-order-item">
+      好评
+      <span>↓</span>
+    </div>
+    <div class="shopkeeper-order-item">
+      预定量
+      <span>↓</span>
+    </div>
+    <div class="shopkeeper-order-item">
+      默认
+      <span>↓</span>
+    </div>
+  </div> -->
+  <!-- 筛选 End -->
+
+  <!-- 商家列表 Start -->
+  <div class="shopkeeper-list">
+  </div>
+  <!-- 商家列表 End -->
+
+  <div class="tab-bar">
+    <div>
+      <span>图标</span>
+      <p>首页</p>
+    </div>
+    <div>
+      <span>图标</span>
+      <p>订单</p>
+    </div>
+    <div>
+      <span>图标</span>
+      <p>我的</p>
+    </div>
+  </div>
+
+  <script src="http://192.168.43.128:2021/public/js/layui.js"></script>
+
+  <script>
+    // 热搜模块
+    layui.use('jquery', function() {
+      let $ = layui.jquery
+      $.get('http://192.168.43.128:2021/home/hot', datas => {
+        console.log('----热搜----', datas)
+        let hotRow = document.querySelector('.hot-item-row')
+        for (let data of datas) {
+          hotRow.innerHTML += `<a class="hot-item" href="/home/search?text=${data.content}">${data.content}</a>`
+        }
+      })
+
+      // 预定TOP
+      $.get('http://192.168.43.128:2021/home/reservetop?month=11', datas => {
+        console.log(datas, 'reservetop')
+
+        let containerDOM = document.querySelector('.reserve-row')
+        let htmlStr = ''
+      
+        for (let i=0; i<2; i++) {
+          htmlStr += `
+          <div class="reserve-item radius">
+            <img src="${datas.results[i].img}" alt="" class="radius">
+            <div class="content">
+              <p class="tit">${datas.results[i].name}</p>
+              <span class="slogan">${datas.results[i].logan ?? '查看详情'}</span>
+              <span class="price-box"><span class="symbol">￥</span><b class="price">${datas.results[i].price}</b></span>
+            </div>
+          </div>
+          `
+        }
+        containerDOM.innerHTML = htmlStr
+      })
+    })
+    
+
+    layui.use('flow', function(){
+      let $ = layui.jquery
+      let flow = layui.flow
+      //信息流
+      flow.load({
+        elem: '.shopkeeper-list',
+        isAuto: true,
+        done(page, next) {
+          let lis = []
+          $.get(`http://192.168.43.128:2021/home/shoplist?page=${page}`, res => {
+            layui.each(res.results, (index, item) => {
+              let htmlStr = `
+              <a class="shopkeeper-item radius-big item-shadow" href="/detail?sid=${item.sid}">
+                <img src="${item.slogo}" alt="" class="radius">
+                <div class="content">
+                  <div class="header-row">
+                    <h3>${item.shopname}</h3>
+                    <span>月预定量<span class="reserve-num"> ${item.reserve ?? 0}</span></span>
+                  </div>
+                  <div class="score-row">
+                    <span class="score-icon">⭐</span>
+                    <span><span class="score-num">${(item.score ?? 0).toFixed(1)}</span>分</span>
+                  </div>
+                  <div class="position-row">
+                    <span class="category">${item.content}</span>
+                    <span>&nbsp;</span>
+                    <span class="position">${item.scanteen}</span>
+                  </div>
+                  <div class="slogan">${item.slogan==='undefined'? '商家很懒,没有标语':item.slogan}</div>
+                </div>
+              </a>
+              `
+              lis.push(htmlStr)
+            })
+            next(lis.join(''), page < res.pages)
+          })
+        }
+      });
+      
+      // //图片懒加载
+      // flow.lazyimg({
+      //   elem: '.shopkeeper-item > img',
+      // })
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+ul { list-style: none; }
+
+/* 公共样式 Start */
+.radius {
+  border-radius: 5px;
+}
+
+.f-lt {
+  float: left;
+}
+.f-gt {
+  float: right;
+}
+.clear-f::after {
+  content: "";
+  height: 0;
+  display: block;
+  clear: both;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+:root {
+
+}
+/* 公共样式 End */

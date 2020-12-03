@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>预定餐 - 人气Top</title>
+  <link rel="stylesheet" href="../public/css/reserveTop.css">
+  <link rel="stylesheet" href="E:/WebTest/layUI/dist/css/layui.css">
+  <base href="http://127.0.0.1:2021">
+</head>
+<body>
+  <div class="nav">
+    <a href="/" class="left">←</a>
+    <div class="center">人气Top榜</div>
+    <a class="right" onclick="location.reload(true)">刷新</a>
+  </div>
+  <div class="shopkeeper-list">
+  </div>
+
+  
+
+  <script src="E:\WebTest\layUI\dist\layui.js"></script>
+  <script>
+    layui.use('flow', function(){
+      let $ = layui.jquery
+      let flow = layui.flow
+      //信息流
+      flow.load({
+        elem: '.shopkeeper-list',
+        done(page, next) {
+          let lis = []
+          $.get(`http://127.0.0.1:2021/home/reservetop?page=${page}&month=11`, datas => {
+            layui.each(datas.results, (index, item) => {
+              lis.push(`
+              <a class="shopkeeper-item" href="/detail?sid=${item.sid}">
+                <img src="${item.img}" alt="">
+                <div class="content">
+                  <div class="header-row clear-f">
+                    <h3 class="f-lt">${item.name}</h3>
+                    <span class="f-gt">本月预定<span class="reserve-num">${item.ordernum}</span></span>
+                  </div>
+                  <div class="price-box"><span class="symbol">￥</span><b class="price">10</b></div>
+                  <div class="slogan">${item.logan ?? '点击查看'}</div>
+                </div>
+              </a>
+              `)
+            })
+            next(lis.join(''), page < datas.pages)
+          })
+        },
+      })
+    });
+  </script>
+</body>
+</html>

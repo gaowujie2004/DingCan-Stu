@@ -1,0 +1,96 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+ul { list-style: none; }
+
+/* 公共样式 Start */
+.radius {
+  border-radius: 5px;
+}
+
+.f-lt {
+  float: left;
+}
+.f-gt {
+  float: right;
+}
+.clear-f::after {
+  content: "";
+  height: 0;
+  display: block;
+  clear: both;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+:root {
+
+}
+/* 公共样式 End */
+
+body > div {
+  padding: 15px 10px;
+}
+
+/* 导航 - 公共样式 Start */
+.nav {
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}
+.nav > .left {
+  flex:  0 0 auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}
+.nav > .center {
+  flex: 3;
+  text-align: center;
+}
+.nav > .right {
+  flex: 0 0 auto;
+  text-align: right;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}
+/* 导航 - 公共样式 End */
+
+/* 商家列表 Start */
+.shopkeeper-item {
+  display: flex;
+  justify-content: space-between;
+}
+.shopkeeper-item > img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+}
+.shopkeeper-item > .content {
+  flex: 1 0 auto;
+}
+.shopkeeper-item h3 {
+  max-width: calc(100vw - 190px);
+}
+
+.shopkeeper-item .score-row {
+  display: flex;
+  align-items:center;
+}
+.shopkeeper-item .score-row .score-icon {
+  margin-right: .5em;
+}
+.shopkeeper-item .slogan {
+  display: inline-block;
+  padding: 2px;
+  border: 1px solid #ddd;
+  border-radius: 50vw 50vw 50vw 0;             /* Hack写法 */
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  max-width: calc(100vw - 120px);         /* img width 100px */
+}
+/* 商家列表 End */
