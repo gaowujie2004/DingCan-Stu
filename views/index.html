@@ -4,12 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>河职-预定餐</title>
+  <base href="http://192.168.43.128:2021">
   <link rel="stylesheet" href="/public/css/index.css">
   <link rel="stylesheet" href="/public/css/layui.css">
-  <base href="http://192.168.43.128:2021">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">    
+  <style>
+    .swiper-slide {
+      height: 100px;
+      width: 100%;
+    }
+    .swiper-pagination-bullet {
+      transition: width .5s;
+      border-radius: 100vw;
+      width: 1.2vw;
+      height: 1.2vw;
+      background-color: rgba(0,0,0,1);
+      opacity: .3;
+    }
+    .swiper-pagination-bullet-active {
+      background-color: rgba(0,0,0,.4);
+      width: 7.5vw;
+      opacity: .7;
+    }
+  </style>
 </head>
 <body>
-  <div class="test"></div>
+  <div class="search-container">
+    <input type="text" placeholder="输入要搜索的内容">
+    <div class="icon"></div>
+    <div class="close"></div>
+  </div>
+
   <!-- 热搜模块 Start -->
   <div class="hot-search">
     <div class="title">热搜:</div>
@@ -22,11 +47,82 @@
   </div>
   <!-- 热搜模块 End -->
 
+  <!-- 轮播图 Start -->
+  <div class="swiper-container" id="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">111</div>
+      <div class="swiper-slide">222</div>
+      <div class="swiper-slide">333</div>
+    </div>
+
+    <div class="swiper-pagination"></div>
+  </div>
+  <!-- 轮播图 End -->
+  <script type="module">
+    import Swiper from 'https://unpkg.com/swiper/swiper-bundle.esm.browser.min.js'
+    let mySwiper = new Swiper('.swiper-container', {
+      autoplay: {
+        delay: 3000,//1秒切换一次
+      },
+      // navigation: {
+      //   nextEl: '.swiper-button-next',
+      //   prevEl: '.swiper-button-prev',
+      // },
+      pagination: {
+        el: '.swiper-pagination',
+        // type: ''
+      },
+    })
+  </script>
+
+  <div class="cate-container">
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>品中食尚</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>品中食尚</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>品中食尚</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>品中食尚</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>品中食尚</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>甜点饮品</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>甜点饮品</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>甜点饮品</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>甜点饮品</p>
+    </a>
+    <a class="cate-item">
+      <div class="cate-icon"></div>
+      <p>甜点饮品</p>
+    </a>
+  </div>
+
   <!--预定Top Start-->
-  <div class="reserve item-shadow p-x p-y bg-white">
+  <div class="reserve radius-big item-shadow p-x p-y bg-white">
     <div class="tit-row">
       <h2>人气榜</h2>
-      <a href="/"><span>更多</span>&nbsp;<b>→</b></a>
+      <a href="/" class="text-small"><span>更多</span>&nbsp;<b>→</b></a>
     </div>
     <br>
     <div class="reserve-row">
@@ -70,6 +166,7 @@
   <!-- 筛选 End -->
 
   <!-- 商家列表 Start -->
+
   <div class="shopkeeper-list">
   </div>
   <!-- 商家列表 End -->
@@ -89,8 +186,9 @@
     </div>
   </div>
 
-  <script src="http://192.168.43.128:2021/public/js/layui.js"></script>
 
+  <script src="/public/js/layui.js"></script>
+  
   <script>
     // 热搜模块
     layui.use('jquery', function() {
@@ -101,7 +199,7 @@
         for (let data of datas) {
           hotRow.innerHTML += `<a class="hot-item" href="/home/search?text=${data.content}">${data.content}</a>`
         }
-      })
+      });
 
       // 预定TOP
       $.get('http://192.168.43.128:2021/home/reservetop?month=11', datas => {
@@ -116,15 +214,16 @@
             <img src="${datas.results[i].img}" alt="" class="radius">
             <div class="content">
               <p class="tit">${datas.results[i].name}</p>
-              <span class="slogan">${datas.results[i].logan ?? '查看详情'}</span>
+              <span class="slogan">${datas.results[i].logan===null ? '查看详情':datas.results[i].logan}</span>
               <span class="price-box"><span class="symbol">￥</span><b class="price">${datas.results[i].price}</b></span>
             </div>
           </div>
           `
         }
         containerDOM.innerHTML = htmlStr
-      })
-    })
+      });
+
+    });
     
 
     layui.use('flow', function(){
@@ -144,11 +243,11 @@
                 <div class="content">
                   <div class="header-row">
                     <h3>${item.shopname}</h3>
-                    <span>月预定量<span class="reserve-num"> ${item.reserve ?? 0}</span></span>
+                    <span>月预定量<span class="reserve-num"> ${ (item.reserve ===null || item.reserve===undefined) && 0}</span></span>
                   </div>
                   <div class="score-row">
                     <span class="score-icon">⭐</span>
-                    <span><span class="score-num">${(item.score ?? 0).toFixed(1)}</span>分</span>
+                    <span><span class="score-num">${(item.score===null ? 0 : item.score).toFixed(1)}</span>分</span>
                   </div>
                   <div class="position-row">
                     <span class="category">${item.content}</span>
@@ -165,11 +264,6 @@
           })
         }
       });
-      
-      // //图片懒加载
-      // flow.lazyimg({
-      //   elem: '.shopkeeper-item > img',
-      // })
     });
   </script>
 </body>

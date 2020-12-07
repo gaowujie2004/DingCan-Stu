@@ -5,11 +5,11 @@ ul { list-style: none; }
 /* 公共样式 Start */
 :root {
   --themeColor: #df5b2b;   /* 主题色,  商家标语就是这个颜色 */
-  --simpleColor: #666666;    /* 浅的文字颜色 */
+  --simpleColor: rgba(0,0,0,.55);    /* 浅的文字颜色 */
   --themeBg: #f8f8f8;
 
-  --middleSize: 3.466vw;
   --smallSize: 3.2vw; /* 描述性文本  不重要的*/
+  --middleSize: 3.466vw;
   --normalSize: 3.73vw; /* 14px */
 
   --normalMargin: 2.666vw;   /* 10px */
@@ -26,17 +26,22 @@ body .p-y {
   padding-bottom: 4vw;
 }
 body .p-x {
-  padding-left: 2.66vw;
-  padding-right: 2.66vw;
+  padding-left: 2.666vw;    /* 10px*/
+  padding-right: 2.666vw;
 }
 body > div {
-  margin-top: 6.13vw;
-  margin-bottom: 6.13vw;
+  margin-top: 6vw;
+  margin-bottom: 6vw;
 }
 
+.text-small {
+  font-size: var(--smallSize);
+  color: var(--simpleColor);
+}
 .text-weight {
   font-weight: bold;
 }
+
 .radius {
   border-radius: 5px;
 }
@@ -65,17 +70,80 @@ a {
 .item-shadow {
   box-shadow: 0 0 20px rgba(0,0,0,.1);
 }
-
 /* 公共样式 End */
 
+/* 搜搜 Start */
+.search-container {
+  /* 去掉特殊 */
+  margin-top: 4vw;
+  margin-bottom: 4vw;
 
+
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+:placeholder-shown {
+  /* font-size: var(--smallSize); */
+  color: var(--simpleColor);
+  padding-left: 1em;
+}
+.search-container input {
+  flex: 1;
+  transition: box-shadow .2s;
+
+  outline: none;
+  border: none;
+  background-color: rgb(219, 216, 216);
+  color: var(--simpleColor);
+
+  border-radius: 100vw;
+  padding-left: 2em;
+  padding-top: .4em;
+  padding-bottom: .4em;
+  /* font-size: var(--smallSize); */
+}
+input:focus {
+  box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
+input:focus ~ .close {
+  visibility: visible;
+  transform: scale(1) translateY(-50%);
+}
+
+.search-container > .icon {
+  margin-left: 1.5em;
+  width: 12vw;
+  height: 11vw;
+  background-color: pink;
+  transition: transform .08s;
+}
+
+.search-container > .close {
+  visibility: hidden;
+  right: calc(12vw + 2.5em);
+  top: 50%;
+  transform: scale(0) translateY(-50%);
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  background-color: pink;
+}
+.search-container > .icon:active {
+  transform: scale(1.2);
+}
+
+/* 搜搜 End */
 
 /* 热搜模块 Start */
 .hot-search {
+  margin-top: 4.5vw;
+
   display: flex;
   align-items: center;
   width: 100%;
-  overflow: hidden;
 
   font-size: var(--middleSize);
 }
@@ -84,17 +152,55 @@ a {
   padding-right: 5px;
 }
 .hot-item-row {
-  flex: 1 0 auto;
+  flex: 1 1 0%;
+  overflow: hidden;   /* hot-item-row 的子项元素 不 */
   display: flex;
+
+  /* justify-content: space-; */
 }
 .hot-item {
+  text-align: center;
+  /* flex: 1; */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: calc(100% / 4);
+
   letter-spacing: .5px;
   margin: 0 .3em;
-  padding: .20em .65em;                     /* !!! */
+  padding: .10em .65em;                     /* !!! */
   border-radius: 100vw;                    /* !!! */
   border: 1px solid #aaa;                /* !!! */
 }
+.hot-item:last-child {
+  margin-left: auto;
+}
 /* 热搜模块 End */
+
+/* 分类 Start */
+.cate-container {
+  font-size: var(--smallSize);
+  display: flex;
+  flex-wrap: wrap;
+}
+.cate-item:nth-child(1) {
+  margin-bottom: 1.8em;
+}
+.cate-item {
+  flex: 1 1 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cate-icon {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 192, 203, .4);
+}
+.cate-item > p {
+  margin-top: .5em;
+}
+/* 分类 End */
 
 /* 预定TOP Start */
 .reserve > .tit-row {

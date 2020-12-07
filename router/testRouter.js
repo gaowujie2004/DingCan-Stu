@@ -7,10 +7,6 @@ const { log } = require('console')
 const upload = multer({ dest: '/public/img' })
 const urlencoded = express.urlencoded({ extended: false })
 const router = express.Router()
-router.use('/', (req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  next()
-})
 
 async function errorCaptured(asyncFunc) {
   try {
@@ -27,14 +23,16 @@ async function errorCaptured(asyncFunc) {
 }
 
 router.get('/', async(req, response) => {
-  // 商家列表
-  let [err, res] = await errorCaptured(query(`select * from shopkeeperx limit 5`))
-  if (err) {
-    log('有误-------', err)
-    response.send('error')
-  } else {
-    response.send(res.results)
-  }
+  console.log('查询字符串对象 query|params: ', req.query)
+  response.send(req.query)
 })
+router.all('/all', (req, res) => {
+  console.log('无论什么请求, 都会过来')
+  res.send({
+    'Content-Type': req.header('Content-Type'),
+      
+  })
+})
+
 
 module.exports = router

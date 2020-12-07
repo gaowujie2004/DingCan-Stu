@@ -1,9 +1,52 @@
 *{margin: 0; padding: 0; box-sizing: border-box;}
 ul { list-style: none; }
 
+
 /* 公共样式 Start */
+:root {
+  --themeColor: #df5b2b;   /* 主题色,  商家标语就是这个颜色 */
+  --simpleColor: rgba(0,0,0,.55);    /* 浅的文字颜色 */
+  --themeBg: #f8f8f8;
+
+  --smallSize: 3.2vw; /* 描述性文本  不重要的*/
+  --middleSize: 3.466vw;
+  --normalSize: 3.73vw; /* 14px */
+
+  --normalMargin: 2.666vw;   /* 10px */
+}
+.bg-white {
+  background-color: #fff;
+}
+body {
+  padding: 0 4vw !important;
+  background-color: var(--themeBg);
+}
+body .p-y {
+  padding-top: 4vw;  /* 15px  => iphone 6 */
+  padding-bottom: 4vw;
+}
+body .p-x {
+  padding-left: 2.666vw;    /* 10px*/
+  padding-right: 2.666vw;
+}
+body > div {
+  margin-top: 6vw;
+  margin-bottom: 6vw;
+}
+
+.text-small {
+  font-size: var(--smallSize);
+  color: var(--simpleColor);
+}
+.text-weight {
+  font-weight: bold;
+}
+
 .radius {
   border-radius: 5px;
+}
+.radius-big {
+  border-radius: 9px;
 }
 
 .f-lt {
@@ -24,11 +67,36 @@ a {
   text-decoration: inherit;
 }
 
-:root {
-
+.item-shadow {
+  box-shadow: 0 0 20px rgba(0,0,0,.1);
 }
+/* 公共样式 End */
 
-body > div {
+/* 导航 - 公共样式 Start */
+.nav {
   padding-left: 15px;
   padding-right: 15px;
+  display: flex;
+  align-items: center;
+  margin-top: 0;
+
+  height: 50px;
 }
+.nav > .left {
+  flex:  0 0 auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}
+.nav > .center {
+  flex: 3;
+  text-align: center;
+}
+.nav > .right {
+  flex: 0 0 auto;
+  text-align: right;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}
+/* 导航 - 公共样式 End */

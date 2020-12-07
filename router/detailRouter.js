@@ -23,30 +23,43 @@ router.get('/', async(req, response) => {
   */
   let sid = req.query.sid
   try {
-    await query(`insert into shop_browser(sid) values(${sid})`)
-    response.send('1')
+    response.sendFile( path.join(__dirname, '../views/detail.html') )
+    query(`insert into shop_browser(sid) values(${sid})`)
   } catch(err) {
     // console.log('------------------------此处有误' ,err)
     response.statusCode = 400
     response.statusMessage = 'error'
     response.send('error')
   }
-
 })
 
 router.post('/collect', async(req, response) => {
   let sid = req.query.sid
   let uid = req.query.uid
+  let state = req.query.state
 
   try {
-    query(`insert into user_like(uid,sid) values(${uid}, ${sid})`)
-    .then(val => {
-      response.send('1')
-    })
-    .catch(err => {
-      response.statusCode = 400
-      response.send('0') // 重复操作
-    })
+    if (state === 'true') {
+      query(`insert into user_like(uid,sid) values(${uid}, ${sid})`)
+      .then(val => {
+        response.send('1')
+      })
+      .catch(err => {
+        response.statusCode = 400
+        response.send('0') // 重复操作
+      })
+    } else {
+      query(`delete from user_like where sid=${sid} and uid=${uid}`)
+      .then(val => {
+        response.send('1')
+      })
+      .catch(err => {
+        response.statusCode = 400
+        response.send('0') // 错误操作
+        console.log(err)
+      })
+    }
+    
   } catch(err) {
     console.log('------------------------此处有误' ,err)
     response.statusCode = 500   // 500 是服务器错误
@@ -220,7 +233,7 @@ router.post('/order/remove', urlencoded, async(req, response) => {
 router.get('/comment', async(req, response) => {
   let sid = req.query.sid
   let page = req.query.page || 1
-  let num = req.query.num || 5
+  let num = req.query.num || 50
 
   try {
     let { results } = await query(`select unickname,uimg,imglist,score,content,time,response from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid} limit ${(page-1)*num}, ${num}`)
@@ -236,8 +249,7 @@ router.get('/comment', async(req, response) => {
       resultRow.time = new Date(time).toLocaleString('chinese', { hour12: false })
     }
 
-    // response.send({ total, good, middle, bad, list: results })
-    response.send(results)
+    response.send({ total, good, middle, bad, list: results })
     log(results)
   } catch(err) {
     console.log('------------------------此处有误---', err)

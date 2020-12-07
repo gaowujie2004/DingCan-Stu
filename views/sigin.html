@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>河职 - 预定餐 - 注册</title>
+  <base href="http://192.168.43.128:2021">
+  <link rel="stylesheet" href="/public/css/public.css">
+  <style>
+    br {
+      display: block;
+      height: 3vw;
+    }
+    html {
+      overflow: hidden;
+      height: 100%;
+    }
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--themeBg);
+      /* position: relative; */
+    }
+
+    h1 {
+      padding-top: 1em;
+      text-align: center;
+      font-weight: 300;
+    }
+    p {
+      font-weight: 300;
+      text-align: center;
+      padding-top: .5em;
+      letter-spacing: 2px;
+      font-size: 16px;
+    }
+
+    .input-container {
+      padding-top: 5em;
+      padding-left: 1em;
+      padding-right: 1em;
+      font-size: var(--middleSize);
+    }
+    .input-row {
+    
+      display: flex;
+      position: relative;
+    }
+    .input-row > input {
+      flex: 1;
+      
+      border: none;
+      outline: none;
+
+      padding: .6em 3.5em;
+      background-color: #ddd;
+      border-radius: 100vw;
+
+      transition: box-shadow .17s;
+    }
+    input:focus {
+      box-shadow: 0 0 8px rgba(0,0,0,.5);
+    }
+    .input-row > .icon {
+      position: absolute;
+      width: 1em;
+      height: 1em;
+      background-color: pink;
+      top: 50%;
+      left: 1em;
+      transform: translateY(-50%);
+    }
+    .input-row + .input-row {
+      margin-top: 1em;
+    }
+    .err-tip {
+      color: var(--themeColor);
+      visibility: hidden;
+      padding-left: 1em;
+
+      padding-bottom: .7em;
+    }
+    .err-tip-show {
+      visibility: visible;
+    }
+    .ok {
+      visibility: hidden;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 1em;
+
+      background-color: pink;
+      width: 1em;
+      height: 1em;
+    }
+    .ok-show {
+      visibility: visible;
+    }
+
+    .input-row > p {
+      padding: 1em 4em;
+      background-color: #bbb;
+      border-radius: 100vw;
+      flex: 1;
+    }
+    .input-row > p:active {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- vue -->
+  <div id="app">
+    <h1>注册河职预定餐 APP</h1>
+    <p>成为用户 - 方便你我他</p>
+    <div class="input-container">
+      <div class="input-row">
+        <span class="icon"></span>
+        <input type="text" name="uname" v-model.lazy="uname" placeholder="用户名" autocomplete="off" @blur="unameCheck">
+        <span class="ok" :class="{'ok-show': unameOk}"></span>
+      </div>
+      <div class="err-tip" :class="{'err-tip-show': isUnameTipShow}">{{unameTipText || '占位'}}</div>
+
+      <div class="input-row">
+        <span class="icon"></span>
+        <input type="text" name="nickname" v-model.lazy="nickname" placeholder="昵称" autocomplete="off" @blur="nicknameCheck">
+        <span class="ok" :class="{ 'ok-show':nicknameOk }"></span>
+      </div>
+      <div class="err-tip" :class="{'err-tip-show': isNicknameTipShow}">{{nickTipText || '占位'}}</div>
+
+      <div class="input-row">
+        <span class="icon"></span>
+        <input type="password" name="pwd" v-model.lazy="pwd" placeholder="密码"  autocomplete="off" @blur="pwdCheck">
+        <span class="ok" :class="{ 'ok-show': pwdOk }"></span>
+      </div>
+      <div class="err-tip" :class="{'err-tip-show': isPwdTipShow}">{{pwdTipText || '占位'}}</div>
+
+      <div class="input-row">
+        <span class="icon"></span>
+        <input type="password" v-model="verify" placeholder="确认密码"  autocomplete="off" @blur="verifyCheck">
+        <span class="ok" :class="{ 'ok-show': verifyOk }"></span>
+      </div>
+      <div class="err-tip" :class="{'err-tip-show': isVerifyTipShow}">{{verifyTipText || '占位'}}</div>
+
+      <div class="input-row" @click="submitClick">
+        <p>注册</p>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        uname: '', isUnameTipShow: false, unameOk: false,
+        nickname: '', isNicknameTipShow: false, nicknameOk: false,
+        pwd: '',  isPwdTipShow: false, pwdOk: false,
+        verify: '', isVerifyTipShow: false, verifyOk: false,
+
+        unameTipText: '',
+        nickTipText: '',
+        pwdTipText: '',
+        verifyTipText: '',
+
+        aaa: ''
+      },
+      methods: {
+        unameCheck() {
+          console.log(this.uname.length)
+          if (this.uname.length >= 6 && this.uname.length <= 12) {
+            // 符合要求
+            // axios.post(`/user/sigin?uname=${this.uname}`).then(val => {
+            //   console.log('后端数据', val)
+            //   val.data === '1'
+            // })
+            this.isUnameTipShow = false
+            this.unameOk = true
+          } else {
+            this.unameTipText = '请输入 6 - 12个字符!'
+
+            this.isUnameTipShow = true
+            this.unameOk = false
+          }
+        },
+        nicknameCheck() {
+          if (this.nickname.length >= 2 && this.nickname.length <= 6) {
+            this.isNicknameTipShow = false
+            this.nicknameOk = true
+          } else {
+            this.nickTipText = '请输入 2 - 6个字符!'
+
+            this.isNicknameTipShow = true
+            this.nicknameOk = false
+          }
+        },
+        pwdCheck() {
+          if (this.pwd.length >= 6 && this.pwd.length <= 16) {
+            this.isPwdTipShow = false
+            this.pwdOk = true
+          } else {
+            this.pwdTipText = '密码要求 6 - 16位'
+
+            this.isPwdTipShow = true
+            this.pwdOk = false
+          }
+        },
+        verifyCheck() {
+          console.log('verifyCheck')
+          if (this.verify.length >= 6 && this.verify.length <= 16) {
+            this.isVerifyTipShow = false
+            this.verifyOk = true
+          } else {
+            this.verifyTipText = '两次输入不一致'
+
+            this.isVerifyTipShow = true
+            this.verifyOk = false
+          }
+        },
+        submitClick() {
+          if ( this.unameOk && this.nicknameOK && this.pwdOk && this.verifyOk ) {
+            console.log('全部符合要求')
+          } else {
+            console.log('不是 全部符合要求, 无法提交')
+            
+          }
+        },
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <base href="http://192.168.43.128:2021/">
+		<!-- <link rel="stylesheet" href="/public/css/layui.css"> -->
+		<link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_2251073_imlym8mrr4.css">
+    <style>
+				.layui-m-layercont {
+					margin: 1em;
+					font-size: 14px;
+				}
+        img {
+            box-shadow: 0 0 5px rgba(0,0,0,.2);
+        }
+        .a {
+            background-image: url('1.jpg');
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+
+        .a1 {
+            margin: 20px;
+            height: 50px;
+        }
+
+        .a1>div {
+            font-size: 27px;
+            float: right;
+            margin: 18px;
+        }
+
+        .a2 {
+            background-color: white;
+            margin: 0px 15px 15px 15px;
+            border-radius: 10px;
+            height: 300px;
+        }
+
+        .a2>h1 {
+            font-size: 35px;
+            margin: 0px 20px;
+            height: 70px;
+            line-height: 70px;
+        }
+
+        .a3 {
+            display: flex;
+            justify-content: flex-start;
+            margin: 0px 20px;
+        }
+
+        .a3>p {
+            height: 22px;
+            line-height: 25px;
+            font-size: 16px;
+            padding: 10px 3px;
+        }
+
+        .a4 {
+						height: 120px;
+						overflow-x: auto;
+						display: flex;
+        }
+
+        .a4>img {
+					flex: 0 0 auto;
+            width: 100px;
+            height: 70px;
+						margin: 10px 3px;
+						display: inline-block;
+						
+        }
+
+        .a5>div>div {
+            width: 50px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .a5>div>p {
+            font-size: 13px;
+        }
+
+        .a5>div {
+            width: 80px;
+            float: left;
+        }
+
+        .a5>p {
+            width: 120px;
+            float: left;
+            font-size: 16px;
+            height: 50px;
+            line-height: 50px;
+            margin-left: 30px;
+        }
+
+        .a6 {
+            background-color: white;
+            margin: 0px 15px 15px 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .a6>div>ul>li {
+            min-width: 30px;
+            padding: 0 10px;
+            font-size: 13px;
+        }
+
+        .a6>div>ul {
+            text-align: center;
+        }
+        .a7>h2{
+            margin: 20px 10px 0;
+            height: 40px;
+            line-height: 40px;
+				}
+        .a7>div{
+            margin: 10px;
+						height: 110px;
+						position: relative;
+        }
+        .a7>div>img{
+            width: 100px;
+            height: 100px;
+            float: left;
+            background-color: red;
+        }
+        .a7>div>div{
+            float: left;
+            margin: 0 10px;
+				}
+        .a7>div>div>div>p{
+            margin-top: 3px;
+        }
+        .a8{
+            margin-top: 7px;
+            color: red;
+            font-size: 20px;
+        }
+        #a9{
+						margin: 35px 10px;
+						position: absolute;
+						right: 1px;
+        }
+        .b1{
+            background-color: white;
+            margin: 0px 15px 15px 15px;
+            border-radius: 10px;
+            height: 300px;
+        }
+        .b1>h1{
+            margin: 0px 20px;
+            height: 70px;
+            line-height: 70px;
+        }
+        .b2>div{
+            margin:30px 0 30px 10px;
+            font-size: 11px;
+            padding: 0 13px;
+            height: 30px;
+            line-height: 30px;
+				}
+				.b3 {
+					overflow: hidden;
+					margin: 3vw;
+				}
+        .b3>div>img{
+            width: 50px;
+            height: 50px;
+        }
+        .b3>div{
+            float: left;
+            margin:10px 0 30px 10px;
+        }
+        .b3>div>div{
+						width: 250px;
+						overflow: hidden;
+				}
+				.b3 .uimg {
+					border-radius: 50%;
+					border: 1px solid #ddd;
+				}
+        .b3 .comment-content {
+						margin-top: 2em;
+            display: -webkit-box;
+            display: -moz-box;
+     
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+
+            overflow: hidden;
+            /* width: 100%; */
+        }
+        .test>ul>li>i{
+           font-size: 10px;
+        }
+        .test>ul>li{
+          width: 14px;
+        }
+        .test>ul{
+          padding: 8px 5px 8px 0;
+        }
+        .b4{
+            margin-top: 10px;
+        }
+        .b4>img{
+            width: 80px;
+            height: 70px;
+        }
+        .clearfloat:after {
+            content: "";
+            height: 0;
+            line-height: 0;
+            display: block;
+            visibility: hidden;
+            clear: both;
+
+        }
+    </style>
+</head>
+
+<body>
+	
+    <div class="a" id="app" ref="app">
+        <div class="layui-icon a1">
+            <div class="layui-icon-left" style="float: left;" onclick="location.href='/'"></div>
+            <div :class="{ 'layui-icon-rate': !isCollect, 'layui-icon-rate-solid': isCollect }" @click="collectClick"></div>      <!-- 收藏 -->
+            <div class="iconfont" :class="{ 'icon-like': !isLike, 'icon-like-fill': isLike }" @click="likeClick"></div>   <!-- 是否点赞-->
+        </div>
+        <div class="a2" id="a2">
+            <h1>{{shopName}}</h1>
+            <div class="a3">
+                <div id="test9"></div>
+								<p>{{score}}分</p>
+                <p style="font-size: 12px;">({{commentNum}}人评论)</p>
+                <p style="font-size: 12px;">({{commentNum}}人评论)</p>
+            </div>
+            <div class="a4">
+								<img v-for="(item,index) of showList" :key="index" :src="item">
+            </div>
+            <div class="a5">
+                <p>{{canteen}}餐厅</p>
+                <div class="layui-icon">
+                    <div class="layui-icon-cellphone"></div>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+        <div class="a6">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">菜单</li>
+                </ul>
+                <div class="layui-tab-content" style="height: 100px;">
+                    <div class="layui-tab-item layui-show a7">
+                        <div v-for="(item,index) of menuList" :key="index">
+                            <img :src="item.mimg" alt="">
+                            <div>
+                                <h2>{{item.mname}}</h2>
+                                <div>
+                                    <p>{{item.mprice}} 元</p>
+                                </div>
+                            </div>
+                            <div class="layui-btn layui-btn-danger" id="a9" @click="reserveClick(item.mid)">预定</div>
+												</div>
+												
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="b1">
+            <h1>评论</h1>
+            <div class="b2">
+                <div class="layui-btn layui-btn-radius layui-btn-warm">全部({{comment.total}})</div>
+                <div class="layui-btn layui-btn-radius layui-btn-primary">好评({{comment.good}})</div>
+								<div class="layui-btn layui-btn-radius layui-btn-primary">一般({{comment.middle}})</div>
+								<div class="layui-btn layui-btn-radius layui-btn-primary">差评({{comment.bad}})</div>
+            </div>
+            <!-- b3 是项目 循环 -->
+            <div class="b3" v-for="(item,index) of commentList" :key="index">
+                <div>
+                    <img :src="item.uimg" alt="" class="uimg">
+                </div>
+                <div>
+                    <div >
+                        <p style="float: left;">{{item.unickname}}</p>
+                        <p style="float: right;">{{item.time}}</p>
+                    </div>
+										<!-- <div>{{item.score}}</div> -->
+										<p class="comment-content">{{item.content}}</p>
+                    <div class="b4">
+											<img v-for="(src,index) of item.imglist" :src="src" :key="index">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+		</div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="/public/layui-dist/layui.js"></script>
+
+		<script src="/public/layer_mobile/layer.js"></script>
+		
+    <script>
+			let sid = new URLSearchParams( location.search ).get('sid')
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					isCollect: '', // 是否 收藏
+					isLike: '', // 是否点赞
+					shopName: '',
+					score: '',
+					commentNum: '',
+					canteen: '',
+					showList: '',
+					
+					menuList: '',
+					reserveTime: '',
+					currentMid: '', //点击的餐
+
+					commentList: '',
+					comment: {
+						total: '',
+						good: '',
+						middle: '',
+						bad: '',
+					}
+				},
+				methods: {
+					likeClick() {
+						// 点赞
+						let state = !this.isLike
+						this.isLike = state
+
+						let params = {
+							sid: sid,
+							uid: 1,
+							like: state,
+						}
+						axios.post('/detail/like', null, { params })
+					},
+					collectClick() {
+						// 收藏
+						
+						let state = !this.isCollect
+						this.isCollect = state
+
+						let params = {
+							sid: sid,
+							uid: 1,
+							state: state,
+						}
+						axios.post(`/detail/collect`, null, {
+							params
+						})
+
+					},
+					
+					reserveClick(mid) {
+						layer.open({
+							type: 1,
+							title: '预定日期',
+							content: `<input id="reserve-time" placeholder="点击选择预定时间">`,
+							btn: ['确定','取消'],
+							className: 'test-layer',
+
+							success(el) {
+								console.log('success', el)
+							},
+							yes(index) {
+								console.log('点击了 确定')
+								layer.close(index)
+
+								let params = {
+									sid: sid,
+									uid: 1,
+									mid: mid,
+									time: vm.reserveTime
+								}
+								
+								let loadIndex = layer.open({
+									type: 2,
+									content: '预定中'
+								})
+								axios.post('/detail/order/add', null, { params })
+									.then(val => {
+										layer.close(loadIndex)
+										layer.open({
+											content: `预定成功 ${vm.reserveTime}!`,
+											btn: '我知道了'
+											// time: 2000
+										})
+									})
+									.catch(err => {
+										layer.close(loadIndex)
+									}) 
+							},
+							no(index) {
+								console.log('点击了 取消')
+							}
+						})
+
+
+						let addDate = new Date( new Date().getTime() + 24*60 * 60*1000 ) 
+						setTimeout(() => {
+							layui.use('laydate', function() {
+								let layDate = layui.laydate
+								let res = layDate.render({
+									position: 'fixed',
+									elem: '#reserve-time',
+									type: 'datetime',
+									format: 'yyyy-MM-dd HH:mm:ss',
+									value: addDate.toLocaleString('chinese', { hour12:false }).replace(/\//g, '-'),
+									isInitValue: true,
+									show: true,
+									ready(date) {
+										console.log('控制初始化', date)
+									},
+									change(value, date, endDate) {
+										if (date.date <= new Date().getDate()) {
+											res.hint('不能选择今日时间')
+										}
+									},
+									done: value => {
+										console.log('完成了', value)
+										vm.reserveTime = value
+									}
+								})
+							})
+						}, 200)
+					}
+				},
+				computed: {
+				
+				},
+				beforeCreate() {
+					// 在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。
+				},
+				async created() {
+					// data props months 都有数据了.  但 el 还没有被挂载
+					// /detail/top?sid=xxxxx & uid=xxxx
+
+					let params = {
+						sid: sid,
+						uid: 1
+					}
+					let { data } = await axios.get(`/detail/top`, { params })
+					let { data: menu } = await axios.get('/detail/menu', { params })
+					let { data: comment } = await axios.get('/detail/comment', { params })
+
+					
+					this.isLike = data.isLike
+					this.isCollect = data.isCollect
+					this.shopName = data.shopName
+					this.score = data.score
+					this.commentNum = data.commentNum
+					this.showList = data.showList
+					this.canteen = data.canteen
+
+					this.menuList = menu
+
+					this.commentList = comment.list
+					this.comment.total = comment.total
+					this.comment.good = comment.good
+					this.comment.middle = comment.middle
+					this.comment.bad = comment.bad
+
+                    document.title = this.shopName
+
+					layui.use(['rate'], function () {
+						let rate = layui.rate;
+						//只读
+							rate.render({
+									elem: '#test9'
+									, value: vm.score
+									, readonly: true
+							})
+					});
+				},
+				beforeUpdate() {
+					// console.log('数据更新之前')
+				},
+			});
+
+			layui.use(['rate'], function () {
+				var rate = layui.rate;
+				//只读
+				rate.render({
+						elem: '.test10'
+						, value: 3
+						, readonly: true
+				});
+			});
+			
+			
+			
+    </script>
+</body>
+
+</html>
