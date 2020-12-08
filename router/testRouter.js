@@ -25,6 +25,8 @@ async function errorCaptured(asyncFunc) {
 router.get('/', async(req, response) => {
   console.log('查询字符串对象 query|params: ', req.query)
   response.send(req.query)
+  let { results } = await query(`select * from shop_order`)
+  console.log(results[0])
 })
 router.all('/all', (req, res) => {
   console.log('无论什么请求, 都会过来')

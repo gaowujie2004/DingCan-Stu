@@ -19,7 +19,9 @@ app.get('/login', (req, res) => {
 app.get('/sigin', (req, res) => {
   res.sendFile( path.join(__dirname, 'views/sigin.html') )
 })
-
+app.get('/collect', (req, res) => {
+  res.sendFile( path.join(__dirname, 'views/collect.html') )
+})
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')

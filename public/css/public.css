@@ -1,5 +1,15 @@
 *{margin: 0; padding: 0; box-sizing: border-box;}
 ul { list-style: none; }
+[v-cloak] {
+  visibility: hidden;
+}
+html {
+  overflow-x: hidden;
+}
+body {
+  background-color: #EAE9EF;
+  overflow-x: hidden;
+}
 
 
 /* 公共样式 Start */
@@ -9,8 +19,10 @@ ul { list-style: none; }
   --themeBg: #f8f8f8;
 
   --smallSize: 3.2vw; /* 描述性文本  不重要的*/
-  --middleSize: 3.466vw;
+  --middleSize: 3.466vw;  
   --normalSize: 3.73vw; /* 14px */
+  --bigSize: 4.266vw;    /* 16px */
+  --bigIISize: 5.333vw;  /* 20px */
 
   --normalMargin: 2.666vw;   /* 10px */
 }
@@ -19,19 +31,33 @@ ul { list-style: none; }
 }
 body {
   padding: 0 4vw !important;
-  background-color: var(--themeBg);
 }
+:root .m-full {
+  margin-left: -4vw;
+  margin-right: -4vw;    /* 抵消上面的 然后100% */
+}
+
 body .p-y {
-  padding-top: 4vw;  /* 15px  => iphone 6 */
-  padding-bottom: 4vw;
+  padding-top: 3.2vw;  /* 12px  => iphone 6 */
+  padding-bottom: 3.2vw;
 }
 body .p-x {
   padding-left: 2.666vw;    /* 10px*/
   padding-right: 2.666vw;
 }
+body .m-y {
+  margin-top: 5.333vw;          /* 20px  375下 */
+  margin-bottom: 5.333vw;
+}
+body .m-t {
+  margin-top: 5.333vw;
+}
+body .m-b {
+  margin-bottom: 5.333vw;
+}
 body > div {
-  margin-top: 6vw;
-  margin-bottom: 6vw;
+  margin-top: 5.333vw;      /* 22.5px */
+  margin-bottom: 5.333vw;
 }
 
 .text-small {
@@ -67,12 +93,37 @@ a {
   text-decoration: inherit;
 }
 
+.btn {
+  position: relative;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  left: -10px; right: -10px; top: -10px; bottom: -10px;
+}
+
 .item-shadow {
   box-shadow: 0 0 20px rgba(0,0,0,.1);
 }
 /* 公共样式 End */
 
+#app {
+  margin-top: 0px; margin-bottom: 0px
+}
+
 /* 导航 - 公共样式 Start */
+.nav {
+  margin-left: -4vw;
+  margin-right: -4vw;    /* 15px  375下 */
+  background-color: #fff;
+  font-size: 2.6vw;
+
+  box-shadow: 0 2px 2px rgba(0,0,0,.07);
+}
+.nav .center {
+  font-weight: 400;
+}
+
 .nav {
   padding-left: 15px;
   padding-right: 15px;
@@ -82,21 +133,29 @@ a {
 
   height: 50px;
 }
-.nav > .left {
-  flex:  0 0 auto;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-right: 8px;
+
+.nav > .left:active {
+  transform: translate(-.5em);
 }
+.nav > .right:active {
+  transform: translate(1em);
+}
+
 .nav > .center {
-  flex: 3;
+  flex: 4;
   text-align: center;
 }
+.nav > .left,
 .nav > .right {
-  flex: 0 0 auto;
-  text-align: right;
+  font-size: var(--bigIISize);
+  transition: transform .1s;
+  flex:  1 1 0;
+
   padding-top: 8px;
   padding-bottom: 8px;
   padding-right: 8px;
+}
+.nav > .right {
+  text-align: right;
 }
 /* 导航 - 公共样式 End */

@@ -4,21 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>预定餐 - 人气Top</title>
-  <link rel="stylesheet" href="../public/css/reserveTop.css">
-  <link rel="stylesheet" href="E:/WebTest/layUI/dist/css/layui.css">
-  <link rel="stylesheet" href="../public/css/public.css">
-  <base href="http://127.0.0.1:2021">
+  <base href="http://192.168.43.128:2021/">
+  <link rel="stylesheet" href="/public/css/public.css">
+  <link rel="stylesheet" href="/public/css/reserveTop.css">
+  <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
 </head>
 <body>
-  <div class="nav">
-    <a href="/" class="left">←</a>
-    <div class="center">人气Top榜</div>
-    <a class="right" onclick="location.reload(true)">刷新</a>
-  </div>
-  <div class="shopkeeper-list">
+  <div class="nav m-b">
+    <a href="/" class="left layui-icon layui-icon-left"></a>
+    <h1 class="center">人气榜</h1>
+    <div class="right layui-icon layui-icon-refresh-1" onclick="location.reload(true)"></div>
   </div>
 
-  
+  <div class="shopkeeper-list">
+  </div>
 
   <script src="E:\WebTest\layUI\dist\layui.js"></script>
   <script>
@@ -30,10 +29,10 @@
         elem: '.shopkeeper-list',
         done(page, next) {
           let lis = []
-          $.get(`http://127.0.0.1:2021/home/reservetop?page=${page}&month=11`, datas => {
+          $.get(`http://192.168.43.128:2021/home/reservetop?page=${page}&month=11`, datas => {
             layui.each(datas.results, (index, item) => {
               lis.push(`
-              <a class="shopkeeper-item" href="/detail?sid=${item.sid}">
+              <a class="shopkeeper-item m-y p-x p-y bg-white item-shadow radius-big" href="/detail?sid=${item.sid}">
                 <img src="${item.img}" alt="">
                 <div class="content">
                   <div class="header-row clear-f">

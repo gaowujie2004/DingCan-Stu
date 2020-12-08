@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的订单</title>
+  <base href="http://192.168.43.128:2021/">
+  <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+  <link rel="stylesheet" href="/public/css/public.css">
+  <link rel="stylesheet" href="/public/css/order.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_2251073_imlym8mrr4.css">
+</head>
+<body>
+  <div id="app">
+    <div class="nav">
+      <a href="/" class="left"></a>
+      <h1 class="center">我的订单</h1>
+      <div class="right"></div>
+    </div>
+
+    <ul class="order-container" v-cloak>
+      <li class="order-item p-x p-y radius-big item-shadow m-y" v-for="(item,index) of orderList" :key="index">
+        <div class="shop-name">{{item.shopname}}</div>
+        <div class="main">
+          <div class="img">
+            <img :src="item.img || '/public/img/default.jpg'" alt="">
+          </div>
+          <div class="content">
+            <div class="menu-name">{{item.mname}}</div>
+            <div class="price-row">
+              <span>￥{{item.price}}</span>
+              <span>&nbsp;&nbsp;{{item.canteen}}</span>
+            </div>
+            <div class="time-row">{{item.time}} 下单</div>
+          </div>
+        </div>
+        <div class="footer-btns m-t">
+          <div class="remove btn" :class="{ 'read-only': !item.isremove }" @click="removeClick(item.id, item.isremove, index)">取消预约</div>
+          <div class="comment btn" :class="{ 'read-only': item.iscomment }" @click="commentClick(item.sid, item.iscomment)">评价</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <script src="/public/layer_mobile/layer.js"></script>
+  <script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        orderList: null,
+      },
+      methods: {
+        async removeClick(id, isRemove, index){
+          /**
+           * params @id 订单ID
+           * params @isRemove 是否 可以取消订单
+           * params @index 数组下标
+          */
+          if (!isRemove) { 
+            layer.open({content: '距离下单时间超过 3小时, 不能取消订单!', btn: '我知道了'})
+            return
+          }
+
+          let loadIndex = layer.open({ content: '取消中', type:2 })
+          axios.post(`/order/remove?id=${id}`)
+            .then(val => {
+              layer.close(loadIndex)
+              this.orderList.splice(index, 1)
+              layer.open({ content: '取消成功!', type: 1, skin: 'msg', time: 1.5})
+            })
+            .catch(err => {
+              layer.close(loadIndex)
+              layer.open({ content: '遇到未知错误!', type: 1, skin: 'msg', time: 1.5})
+            })
+         
+        },
+        
+        async commentClick(sid, isComment){ 
+          /**
+           * params @sid 商家id
+           * params @isComment 是否评论了 如果评论了 就显示 评论日期, 没评论显示 null
+          */
+          if (isComment) {
+            return layer.open({ content:'亲, 您已经评论过啦',  type:1, skin:'msg', time: 1.5})
+          }
+          
+          layer.open()
+        }
+      },
+      created() {
+        axios.get('/order/all?uid=1').then(val => {
+          this.orderList = val.data
+          console.log(val.data)
+        })
+      }
+
+    })
+  </script>
+</body>
+</html>

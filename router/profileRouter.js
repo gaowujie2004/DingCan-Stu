@@ -4,6 +4,25 @@ const { query } = require('../utils/mysql/mysqlPromise')
 const { log } = require('console')
 
 const router = express.Router()
+
+router.get('/', async(req, response) => {
+  response.sendFile( path.join( __dirname, '../views/profile.html' ) )
+})
+
+router.get('/info', async(req, response) => {
+  let uid = req.query.uid
+
+  try {
+    let { results } = await query(`select unickname as nickname, uimg as img from user where uid=${uid}`)
+    response.send(results[0])
+  } catch(err) {
+    console.log('------------------------此处有误---', err)
+    response.statusCode = 500
+    response.statusMessage = 'error'
+    response.send('error')
+  }
+})
+
 router.post('/img', async(req, response) => {
   let src = req.query.src
   let uid = req.query.uid

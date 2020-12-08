@@ -40,10 +40,25 @@
   object-position: center;
 }
 .shopkeeper-item > .content {
-  flex: 1 0 auto;
+  flex: 1 1 0;
+  overflow: hidden;
+  margin-left: .7em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+
+  white-space: nowrap;
 }
 .shopkeeper-item h3 {
   max-width: calc(100vw - 190px);
+  
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.shopkeeper-item .header-row {
+  width: 100%;
 }
 
 .shopkeeper-item .score-row {

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>我的</title>
+  <base href="http://192.168.43.128:2021/">
+  <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+  <link rel="stylesheet" href="/public/css/public.css">
+  <link rel="stylesheet" href="/public/css/profile.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_2251073_imlym8mrr4.css">
+</head>
+<body>
+  <div id="app">
+    <div class="nav m-b">
+      <a href="/" class="left"></a>
+      <h1 class="center">关于我的</h1>
+      <div class="right"></div>
+    </div>
+    
+    <ul class="info-container">
+      <li class="info-item p-x p-y" @click="imgClick">
+        <div class="text-cell">头像</div>
+        <div class="center-cell">
+          <img :src="info.img" alt="">
+        </div>
+        <div class="icon layui-icon layui-icon-right"></div>
+      </li>
+
+      <li class="info-item p-x p-y" @click="nicknameClick">
+        <div class="text-cell">昵称</div>
+        <div class="center-cell big-cell">
+          {{info.nickname}}
+        </div>
+        <div class="icon layui-icon layui-icon-right"></div>
+      </li>
+
+      <li class="info-item p-x p-y" @click="collectClick">
+        <div class="text-cell">收藏</div>
+        <div class="center-cell">
+        </div>
+        <div class="icon layui-icon layui-icon-right"></div>
+      </li>
+
+      <li class="info-item p-x p-y" @click="pwdClick">
+        <div class="text-cell">修改密码</div>
+        <div class="center-cell">
+        </div>
+        <div class="icon layui-icon layui-icon-right"></div>
+      </li>
+    </ul>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <script src="/public/layer_mobile/layer.js"></script>
+  <script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        info: '',
+
+        src: '',  // 选择的用户头像ID
+        inputNickname: '', // 更改的 用户名
+        oldPwd: '',
+        pwd: '',
+        verify: null,
+      },
+
+      methods: {
+        async imgClick(){
+          let that = this
+
+          let imgStr = ''
+          for (let i=1; i<=30; i++) {
+            imgStr += `<img src="/public/img/profile/${i}.jpg" id="${i}" tabindex=${i}>`
+          }
+          let htmlStr = `
+          <div class="layer-full" onclick="profileImgClick(event, 2)">
+            ${imgStr}
+          </div>
+          `
+          layer.open({
+            type: 1,
+            anim: 'up',
+            className: 'layer-full',
+            content: htmlStr,
+            btn: ['确定', '取消'],
+            yes(index) {
+              layer.close(index)
+              axios.post(`/profile/img?src=${that.src}&uid=1`)
+                .then(val => {
+                  layer.open({ content:'头像更改成功!', skin:'msg', time:1.5 })
+                  // Vue 更新
+                  that.info.img = `/public/img/profile/${that.src}.jpg`
+                })
+            },
+            no() {
+
+            }
+          })
+        },
+        async nicknameClick(){
+          let that = this
+          layer.open({
+            type: 1,
+            content: '<div class="input-wrap"><input placeholder="输入新的昵称" oninput="nicknameChange(event)"></div>',
+            btn: ['确认', '取消'],
+            className: 'layer-nickname',
+            yes(index) {
+              let params = {
+                uid: 1,
+                name: that.inputNickname
+              }
+              if (that.inputNickname.length>=2 && that.inputNickname.length<=6) {
+                axios.post('/profile/nickname', null, { params })
+                  .then(val => {
+                    if (Number(val.data) === 1) {
+                      layer.close(index)
+                      layer.open({content:'昵称修改成功!', skin:'msg', time:1.5})
+
+                      // Vue修改 昵称
+                      that.info.nickname = that.inputNickname
+                      return
+                    }
+                  })
+                return
+              }
+
+              layer.open({content:'2-6个字符限制', skin:'msg', time:1.5})
+            }
+          })
+        },
+        async collectClick(){
+          location.href = '/collect'
+        },
+        async pwdClick(){
+          let that = this
+          layer.open({
+            type: 1,
+            content: `<div class="input-wrap">
+              <input placeholder="输入旧密码" oninput="oldInput(event)">
+              <input type="password" placeholder="输入新的密码" oninput="pwdInput(event)">
+              <input type="password" placeholder="确认密码" oninput="verifyInput(event)">
+              </div>`,
+            btn: ['确认', '取消'],
+            className: 'layer-nickname',
+            yes(index) {
+              if (that.pwd === that.verify) {
+                layer.close(index)
+                let params = {
+                  uid: 1,
+                  pwd: that.oldPwd,
+                  newpwd: that.verify
+                }
+                axios.post(`/profile/pwd`, null, { params })
+                  .then(val => {
+                    if (Number(val.data) === -1) {
+                      // 新密码不符合要求
+                      layer.open({ content:'新密码要在 6-20个字符内', skin:'msg', time:2 })
+                      return
+                    }
+                    if (Number(val.data) === 1) {
+                      // OK
+                      layer.open({ content:'密码修改成功!', skin:'msg', time:1.5 })
+                      return
+                    }
+
+                    // 0
+                    layer.open({ content:'修改失败, 旧密码错误!', skin:'msg', time:2 })
+                  })
+                  .catch(err => {
+                    console.log('error', err)
+                    layer.open({ content:'修改失败, 请稍后重试!', skin:'msg', time:1.5 })
+                  })
+                return
+              }
+              layer.open({content:'两次密码不一致', skin:'msg', time:1.5})
+            }
+          })
+        },
+      },
+
+      created(){
+        axios.get(`/profile/info?uid=1`).then(val => {
+          this.info = val.data
+        })
+      }
+    })
+    function profileImgClick(ev, avg) {
+      // 图片编号
+      let id = ev.target.getAttribute('id')
+      app.$data.src = id
+    }
+    function nicknameChange(ev) {
+      let val = ev.target.value
+      app.$data.inputNickname = val
+    }
+    function oldInput(ev) {
+      app.$data.oldPwd = ev.target.value
+    }
+    function pwdInput(ev) {
+      let val = ev.target.value
+      app.$data.pwd = val
+    }
+    function verifyInput(ev) {
+      let val = ev.target.value
+      console.log(val)
+      app.$data.verify = val
+    }
+  </script>
+</body>
+</html>

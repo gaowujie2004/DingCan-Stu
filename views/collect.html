@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的收藏</title>
+  <base href="http://192.168.43.128:2021/">
+  <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+  <link rel="stylesheet" href="/public/css/public.css">
+  <link rel="stylesheet" href="/public/css/collect.css">
+</head>
+<body>
+  <div id="app">
+    <div class="nav m-b">
+      <a href="/profile" class="left layui-icon layui-icon-left"></a>
+      <h1 class="center">我的收藏</h1>
+      <div class="right"></div>
+    </div> 
+    <!-- 商家列表 -->
+    <div class="shopkeeper-list">
+      <a class="shopkeeper-item radius-big item-shadow" v-for="(item,index) of shopkeeperList" :href=" '/detail?sid=' + item.sid ">
+        <img :src="item.logo" alt="" class="radius">
+        <div class="content">
+          <div class="header-row">
+            <h3>{{item.shopname}}</h3>
+          </div>
+          <div class="position-row">
+            <span class="position">{{item.canteen}}</span>
+          </div>
+          <div class="slogan">{{item.logan==='undefined'? '商家很懒,没有标语':item.logan}}</div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <script src="/public/layer_mobile/layer.js"></script>
+  <script>
+    let app = new Vue({
+      el: '#app',
+      data: {
+        shopkeeperList: '',
+      },
+      async created() {
+        let { data } = await axios.get('/profile/like?uid=1')
+        this.shopkeeperList = data
+      }
+    })
+  </script>
+</body>
+</html>

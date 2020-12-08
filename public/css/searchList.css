@@ -1,40 +1,13 @@
-/* 导航 - 公共样式 Start */
-.nav {
-  height: 45px;
-  padding-left: 20px;
-  padding-right: 20px;
-  display: flex;
-  align-items: center;
-}
-.nav > .left {
-  flex:  0 0 auto;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-right: 8px;
-}
-.nav > .center {
-  flex: 3;
-  text-align: center;
-}
-.nav > .right {
-  flex: 0 0 auto;
-  text-align: right;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-right: 8px;
-}
-/* 导航 - 公共样式 End */
-
-* 商家列表 Start */
+/* 商家列表 Start */
 .shopkeeper-list {
   padding-bottom: 49px;
 }
 .shopkeeper-item {
   display: flex;
   justify-content: space-between;
-
-  outline: 1px solid red;
-  padding: 10px;
+  background-color: #fff;
+  padding: 15px 10px;
+  margin-top: 15px;
 }
 .shopkeeper-item + .shopkeeper-item {
   margin-top: 15px;
@@ -57,23 +30,36 @@
 }
 .shopkeeper-item .header-row {
   align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}.shopkeeper-item .header-row span {
+  font-size: var(--smallSize);
+  color: var(--themeColor);
 }
 .shopkeeper-item h3 {
   max-width: calc(100% - 70px);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  font-weight: 800;
 }
 
 .shopkeeper-item .score-row {
   display: flex;
-  align-items:center;
+  align-items: center;
 }
 .shopkeeper-item .score-row .score-icon {
   margin-right: .5em;
 }
+.shopkeeper-item .position-row {
+  color: var(--simpleColor);
+  font-size: var(--middleSize);
+}
 .shopkeeper-item .slogan {
-  font-size: 12px;
+  font-size: var(--smallSize);
   display: inline-block;
   padding: .1em .7em;
   border: 1px solid #ddd;
@@ -84,5 +70,6 @@
   white-space: nowrap;
 
   max-width: 100%;
+  color: var(--themeColor);
 }
 /* 商家列表 End */

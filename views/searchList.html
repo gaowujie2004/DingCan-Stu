@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>搜索列表</title>
+  <title>搜索结果</title>
   <base href="http://127.0.0.1:2021">
   <link rel="stylesheet" href="../public/css/public.css">
   <link rel="stylesheet" href="../public/css/searchList.css">
   <link rel="stylesheet" href="E:/WebTest/layUI/dist/css/layui.css">
 </head>
 <body>
-  <div class="nav">
-    <a href="/" class="left">←</a>
-    <div class="center">搜索结果</div>
-    <div class="right">刷新</div>
+  <div class="nav m-b">
+    <a href="/" class="left layui-icon layui-icon-left"></a>
+    <h1 class="center">搜索结果</h1>
+    <div class="right layui-icon layui-icon-refresh-1" onclick="location.reload(true)"></div>
   </div>
 
   <div class="shopkeeper-list">
@@ -38,7 +38,7 @@
             let lis = []
             layui.each(data.results, (index, item) => {
               lis.push(`
-              <a class="shopkeeper-item" href="/detail?sid=${item.sid}">
+              <a class="shopkeeper-item radius-big" href="/detail?sid=${item.sid}">
                 <img src="${item.slogo}" alt="">
                 <div class="content">
                   <div class="header-row clear-f">
