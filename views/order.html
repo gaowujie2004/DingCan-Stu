@@ -5,10 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>我的订单</title>
   <base href="http://192.168.43.128:2021/">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_2257342_jkya4xuwro.css">
   <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
   <link rel="stylesheet" href="/public/css/public.css">
   <link rel="stylesheet" href="/public/css/order.css">
-  <link rel="stylesheet" href="//at.alicdn.com/t/font_2251073_imlym8mrr4.css">
+  <style>
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 4vw;
+      right: 4vw;
+      z-index: 100;
+    }
+    body {
+      margin-top: 13.333vw 
+      /* 50px */
+    }
+    .iconfont {
+      font-size: 6.4vw;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -40,7 +56,28 @@
         </div>
       </li>
     </ul>
+
+    <!-- tab-bar Start -->
+    <div class="tab-bar" style="margin-bottom: 0;">
+      <div onclick="tabBarClick(event, 0)">
+        <span class="iconfont icon-home"></span>
+        <p>首页</p>
+      </div>
+      <div onclick="tabBarClick(event, 1)">
+        <span class="iconfont icon-order"></span>
+        <p>订单</p>
+      </div>
+      <div onclick="tabBarClick(event, 2)">
+        <span class="iconfont icon-profile"></span>
+        <p>我的</p>
+      </div>
+    </div>
+    <!-- tab-bar End -->
   </div>
+  <script>
+    let pid = Number( location.search.slice(1).split('=')[1] )
+    document.querySelectorAll('.tab-bar > div')[pid].classList.add('tab-bar-click')
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
@@ -97,6 +134,29 @@
       }
 
     })
+  
+    let oldTabBarActiveEl
+    function tabBarClick(e, pid){
+      if (oldTabBarActiveEl) {
+        
+        oldTabBarActiveEl.classList.remove('tab-bar-click')
+      }
+      e.currentTarget.classList.add('tab-bar-click')
+      oldTabBarActiveEl = e.currentTarget
+      
+      if (pid === 0) {
+        // 首页
+        location.href = '/?pid=0'
+      }
+      if (pid === 1) {
+        // 订单
+        location.href = '/order?pid=1'
+      }
+      if (pid === 2) {
+        // 我的
+        location.href = '/profile?pid=2'
+      }
+    }
   </script>
 </body>
 </html>

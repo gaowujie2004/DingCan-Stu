@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const { query } = require('../utils/mysql/mysqlPromise')
 const { log } = require('console')
+const { type } = require('os')
 
 const router = express.Router()
 router.get('/search', async(req, response) => {
@@ -57,7 +58,11 @@ router.get('/category', async(req, response) => {
   try {
     let cate = req.query.cate 
     let canteen = req.query.canteen
-    if (canteen) {
+
+    log(cate)
+    
+    if (canteen !== 'null' && canteen !== 'undefined' && canteen !== '' &canteen !== undefined) {
+      log('进入  第一个IF', canteen)
       let { results } = await query(`select shop_category.sid,content,shopname,scanteen,slogo,slogan from (shopkeeper left join shop_category on shop_category.sid=shopkeeper.sid) where scanteen='${canteen}' group by sid`)
       for (let i=0; i<results.length; i++) {
         let resultRow = results[i]
@@ -71,24 +76,33 @@ router.get('/category', async(req, response) => {
       return;
     }
 
-    if (typeof cate !== 'string') {
-      let totalResults = []
-      for (let text of cate) {
-        let { results } = await query(`select shop_category.sid,content,shopname,scanteen,slogo,slogan from (shop_category left join shopkeeper on shop_category.sid=shopkeeper.sid) where content like '%${text}%' or shopname like '%${text}%' group by sid`)
-        for (let i=0; i<results.length; i++) {
-          let resultRow = results[i]
-          let sid = resultRow.sid 
-          let { results: avgResults } = await query(`select avg(score) as score from shop_comment where sid=${sid}`)
-          let { results: reserveResults } = await query(`select count(*) as reserve from shop_order where sid=${sid} and date(curdate())=date(time)`)
-          resultRow.score = avgResults[0].score
-          resultRow.reserve = reserveResults[0].reserve
-        }
-        totalResults.push(...results)
+    if (cate instanceof Array) {
+      let whereStr = ''
+
+      if (cate.length === 2) {
+        whereStr = `where content like '%${cate[0]}%' or content like '%${cate[1]}%' or shopname like '%${cate[0]}%' or shopname like '$%{cate[1]}%'`
       }
-      response.send(totalResults)
+      if (cate.length === 3) {
+        whereStr = `where content like '%${cate[0]}%' or content like '%${cate[1]}%' or content like '%${cate[2]}%' or shopname like '%${cate[0]}%' or shopname like '%${cate[1]}%' or shopname like '%${cate[2]}%'`
+      }
+
+      log(whereStr)
+      let { results } = await query(`select shop_category.sid,content,shopname,scanteen,slogo,slogan from (shop_category left join shopkeeper on shop_category.sid=shopkeeper.sid) ${whereStr} group by sid`)
+      for (let i=0; i<results.length; i++) {
+        let resultRow = results[i]
+        let sid = resultRow.sid 
+        let { results: avgResults } = await query(`select avg(score) as score from shop_comment where sid=${sid}`)
+        let { results: reserveResults } = await query(`select count(*) as reserve from shop_order where sid=${sid} and date(curdate())=date(time)`)
+        resultRow.score = avgResults[0].score
+        resultRow.reserve = reserveResults[0].reserve
+      }
+      
+      response.send(results)
       return;
     }
 
+    // cate => string
+    log(cate)
     let { results } = await query(`select shop_category.sid,content,shopname,scanteen,slogo,slogan from (shop_category left join shopkeeper on shop_category.sid=shopkeeper.sid) where content like '%${cate}%' or shopname like '%${cate}%' group by sid`)
     for (let i=0; i<results.length; i++) {
       let resultRow = results[i]
@@ -99,7 +113,6 @@ router.get('/category', async(req, response) => {
       resultRow.reserve = reserveResults[0].reserve
     }
     response.send(results)
-
   } catch(err) {
     log('--------此处有误--------', err)
     response.statusCode = 500

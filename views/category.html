@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>搜索结果</title>
+  <title>商家列表</title>
   <base href="http://192.168.43.128:2021/">
   <link rel="stylesheet" href="/public/css/public.css">
   <link rel="stylesheet" href="/public/css/shopList.css">
   <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+
   <style>
     .nav {
       position: fixed;
@@ -26,7 +27,7 @@
 <body>
   <div class="nav m-b">
     <a href="/" class="left layui-icon layui-icon-left"></a>
-    <h1 class="center">搜索结果</h1>
+    <h1 class="center">商家列表</h1>
     <div class="right layui-icon layui-icon-refresh-1" onclick="location.reload(true)"></div>
   </div>
 
@@ -36,19 +37,19 @@
   <script>
     layui.use('flow', function () {
       // 获取 参数 text
-      let text = new URLSearchParams(location.search).get('text')
       let $ = layui.jquery
       let flow = layui.flow
-
 
       flow.load({
         elem: '.shopkeeper-list',
         isAuto: true,
         done(page, next) {
           let lis = []
-          $.get(`http://192.168.43.128:2021/home/search?text=${text}`, data => {
+          let queryStr = location.search
+          $.get(`http://192.168.43.128:2021/home/category${queryStr}`, data => {
             let lis = []
-            layui.each(data.results, (index, item) => {
+            console.log(data)
+            layui.each(data, (index, item) => {
               lis.push(`
               <a class="shopkeeper-item radius-big" href="/detail?sid=${item.sid}">
                 <img src="${item.slogo}" alt="">

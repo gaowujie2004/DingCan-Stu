@@ -1,84 +1,8 @@
-*{margin: 0; padding: 0; box-sizing: border-box;}
-ul { list-style: none; }
-
-
-/* 公共样式 Start */
-:root {
-  --themeColor: #df5b2b;   /* 主题色,  商家标语就是这个颜色 */
-  --simpleColor: rgba(0,0,0,.55);    /* 浅的文字颜色 */
-  --themeBg: #f8f8f8;
-
-  --smallSize: 3.2vw; /* 描述性文本  不重要的*/
-  --middleSize: 3.466vw;
-  --normalSize: 3.73vw; /* 14px */
-
-  --normalMargin: 2.666vw;   /* 10px */
-}
-.bg-white {
-  background-color: #fff;
-}
-body {
-  padding: 0 4vw !important;
-  background-color: var(--themeBg);
-}
-body .p-y {
-  padding-top: 4vw;  /* 15px  => iphone 6 */
-  padding-bottom: 4vw;
-}
-body .p-x {
-  padding-left: 2.666vw;    /* 10px*/
-  padding-right: 2.666vw;
-}
-body > div {
-  margin-top: 6vw;
-  margin-bottom: 6vw;
-}
-
-.text-small {
-  font-size: var(--smallSize);
-  color: var(--simpleColor);
-}
-.text-weight {
-  font-weight: bold;
-}
-
-.radius {
-  border-radius: 5px;
-}
-.radius-big {
-  border-radius: 9px;
-}
-
-.f-lt {
-  float: left;
-}
-.f-gt {
-  float: right;
-}
-.clear-f::after {
-  content: "";
-  height: 0;
-  display: block;
-  clear: both;
-}
-
-a {
-  color: inherit;
-  text-decoration: inherit;
-}
-
-.item-shadow {
-  box-shadow: 0 0 20px rgba(0,0,0,.1);
-}
-/* 公共样式 End */
-
 /* 搜搜 Start */
 .search-container {
   /* 去掉特殊 */
   margin-top: 4vw;
   margin-bottom: 4vw;
-
-
 
   position: relative;
   display: flex;
@@ -108,28 +32,30 @@ a {
 input:focus {
   box-shadow: 0 0 5px rgba(0,0,0,.2);
 }
-input:focus ~ .close {
-  visibility: visible;
-  transform: scale(1) translateY(-50%);
-}
-
-.search-container > .icon {
-  margin-left: 1.5em;
-  width: 12vw;
-  height: 11vw;
-  background-color: pink;
-  transition: transform .08s;
-}
-
 .search-container > .close {
   visibility: hidden;
   right: calc(12vw + 2.5em);
   top: 50%;
   transform: scale(0) translateY(-50%);
   position: absolute;
+  z-index: 1000;
   width: 1em;
   height: 1em;
   background-color: pink;
+}
+.search-container > .close-show {
+  visibility: visible;
+  transform: scale(1) translateY(-50%);
+}
+
+.search-container > .icon {
+  margin-left: 1em;
+  width: 12vw;
+  height: 11vw;
+  transition: transform .08s;
+
+  display: flex;
+  align-items: center;
 }
 .search-container > .icon:active {
   transform: scale(1.2);
@@ -193,12 +119,12 @@ input:focus ~ .close {
   align-items: center;
 }
 .cate-icon {
+  text-align: center;
   width: 30px;
   height: 30px;
-  background-color: rgba(255, 192, 203, .4);
 }
 .cate-item > p {
-  margin-top: .5em;
+  margin-top: .2em;
 }
 /* 分类 End */
 
@@ -259,7 +185,7 @@ input:focus ~ .close {
 
 /* 商家列表 Start */
 .shopkeeper-list {
-  padding-bottom: 49px;
+  padding-bottom: 50px;
 }
 .shopkeeper-item {
   display: flex;
@@ -278,31 +204,35 @@ input:focus ~ .close {
   object-position: center;
 }
 .shopkeeper-item > .content {
-  flex: 1 1 auto;
+  flex: 1 0 0%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: flex-start;
 
-  max-width: calc(100% - 100px);
-  padding-left: 15px;
+  overflow: hidden;
+  margin-left: 15px;
 }
 .shopkeeper-item .header-row {
-  align-self: stretch;
+  width: 100%;
+  overflow: hidden;
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  align-self: stretch;
+  justify-content: space-around;
   
 }.shopkeeper-item .header-row span {
   font-size: var(--smallSize);
   color: var(--themeColor);
 }
 .shopkeeper-item h3 {
-  max-width: calc(100% - 70px);
+  flex: 1 0 0%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 
+  margin-right: .3em;
   font-weight: 800;
 }
 
@@ -310,14 +240,19 @@ input:focus ~ .close {
   display: flex;
   align-items: center;
 }
-.shopkeeper-item .score-row .score-icon {
-  margin-right: .5em;
+.shopkeeper-item .score-row .layui-icon {
+  color: #FFB800;
+  padding-right: .5em;
+  margin-top: -0.05em;
 }
+
 .shopkeeper-item .position-row {
   color: var(--simpleColor);
   font-size: var(--middleSize);
 }
 .shopkeeper-item .slogan {
+  max-width: 100%;
+
   font-size: var(--smallSize);
   display: inline-block;
   padding: .1em .7em;
@@ -328,7 +263,6 @@ input:focus ~ .close {
   text-overflow:ellipsis;
   white-space: nowrap;
 
-  max-width: 100%;
   color: var(--themeColor);
 }
 /* 商家列表 End */
@@ -354,5 +288,15 @@ input:focus ~ .close {
 .tab-bar > div {
   text-align: center;
   padding: 5px;
+}
+
+.tab-bar-click {
+  color: var(--themeColor);
+}
+.tab-bar > div {
+  transition: all .1s;
+}
+.tab-bar > div:active {
+  transform: scale(0.85);
 }
 /* Tab-Bar End */

@@ -6,8 +6,21 @@
   <title>预定餐 - 人气Top</title>
   <base href="http://192.168.43.128:2021/">
   <link rel="stylesheet" href="/public/css/public.css">
-  <link rel="stylesheet" href="/public/css/reserveTop.css">
+  <link rel="stylesheet" href="/public//css/shopList.css">
   <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+  <style>
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 4vw;
+      right: 4vw;
+    }
+    body {
+      /* margin-top: 14.666vw; */
+      margin-top: 13.333vw 
+      /* 50px */
+    }
+  </style>
 </head>
 <body>
   <div class="nav m-b">
@@ -19,7 +32,7 @@
   <div class="shopkeeper-list">
   </div>
 
-  <script src="E:\WebTest\layUI\dist\layui.js"></script>
+  <script src="/public/layui-dist/layui.js"></script>
   <script>
     layui.use('flow', function(){
       let $ = layui.jquery
@@ -40,7 +53,7 @@
                     <span class="f-gt">本月预定<span class="reserve-num">${item.ordernum}</span></span>
                   </div>
                   <div class="price-box"><span class="symbol">￥</span><b class="price">10</b></div>
-                  <div class="slogan">${item.logan ?? '点击查看'}</div>
+                  <div class="slogan">${(item.logan ===null || item.logan===undefined) ? '点击查看':item.logan}</div>
                 </div>
               </a>
               `)

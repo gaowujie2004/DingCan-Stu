@@ -14,7 +14,8 @@ body {
 
 /* 公共样式 Start */
 :root {
-  --themeColor: #df5b2b;   /* 主题色,  商家标语就是这个颜色 */
+  --themeColor: #df5b2b;   /*主题色,  商家标语就是这个颜色*/
+  /* --themeColor: #FFB800; */
   --simpleColor: rgba(0,0,0,.55);    /* 浅的文字颜色 */
   --themeBg: #f8f8f8;
 
@@ -30,12 +31,9 @@ body {
   background-color: #fff;
 }
 body {
-  padding: 0 4vw !important;
+  padding: 0 4vw !important;           /* 15px */
 }
-:root .m-full {
-  margin-left: -4vw;
-  margin-right: -4vw;    /* 抵消上面的 然后100% */
-}
+
 
 body .p-y {
   padding-top: 3.2vw;  /* 12px  => iphone 6 */
@@ -45,6 +43,7 @@ body .p-x {
   padding-left: 2.666vw;    /* 10px*/
   padding-right: 2.666vw;
 }
+
 body .m-y {
   margin-top: 5.333vw;          /* 20px  375下 */
   margin-bottom: 5.333vw;
@@ -55,10 +54,15 @@ body .m-t {
 body .m-b {
   margin-bottom: 5.333vw;
 }
+:root .m-full {
+  margin-left: -4vw;
+  margin-right: -4vw;    /* 抵消上面的 然后100% */
+}
 body > div {
   margin-top: 5.333vw;      /* 22.5px */
   margin-bottom: 5.333vw;
 }
+
 
 .text-small {
   font-size: var(--smallSize);
@@ -159,3 +163,38 @@ a {
   text-align: right;
 }
 /* 导航 - 公共样式 End */
+
+
+/* Tab-Bar Start */
+.tab-bar {
+  font-size: var(--normalSize);
+
+  margin: 0;
+  box-shadow: 0 -2px 8px rgba(0,0,0,.17);
+
+  padding: 0;
+  display: flex;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 50px;
+  background-color: #fff;
+  z-index: 10;
+
+  justify-content: space-around;
+  align-items: center;
+}
+.tab-bar > div {
+  text-align: center;
+  padding: 5px;
+}
+
+.tab-bar-click {
+  color: var(--themeColor);
+}
+.tab-bar > div {
+  transition: all .1s;
+}
+.tab-bar > div:active {
+  transform: scale(0.85);
+}
+/* Tab-Bar End */
