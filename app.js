@@ -90,9 +90,9 @@ app.get('/profile', (req, res) => {
 // API路由中间件
 app.use('/', indexRouter)
 app.use('/home', homeRouter)
-app.use('/detail', detailRouter)
-app.use('/order', orderRouter)
-app.use('/profile', profileRouter)
+app.use('/detail', detailRouter)          // 权限分配
+app.use('/order', orderRouter)            // 权限分配
+app.use('/profile', profileRouter)        // 权限分配
 app.use('/user', userRouter)
 app.use('/other', otherRouter)
 app.use('/test', testRouter)
