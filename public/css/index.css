@@ -25,8 +25,8 @@
 
   border-radius: 100vw;
   padding-left: 2em;
-  padding-top: .4em;
-  padding-bottom: .4em;
+  padding-top: .58em;
+  padding-bottom: .58em;
   /* font-size: var(--smallSize); */
 }
 input:focus {
@@ -60,7 +60,6 @@ input:focus {
 .search-container > .icon:active {
   transform: scale(1.2);
 }
-
 /* 搜搜 End */
 
 /* 热搜模块 Start */
@@ -98,9 +97,9 @@ input:focus {
   border-radius: 100vw;                    /* !!! */
   border: 1px solid #aaa;                /* !!! */
 }
-.hot-item:last-child {
+/* .hot-item:last-child {
   margin-left: auto;
-}
+} */
 /* 热搜模块 End */
 
 /* 分类 Start */

@@ -2,7 +2,6 @@ const express = require('express')
 const path = require('path')
 const { query } = require('../utils/mysql/mysqlPromise')
 const { log } = require('console')
-const { type } = require('os')
 
 const router = express.Router()
 router.get('/search', async(req, response) => {
@@ -32,7 +31,10 @@ router.get('/search', async(req, response) => {
     response.send({ results, pages })
 
     // 另外操作
-    query(`insert into search values('${text}')`)
+    if (text !== '' && text !== null && text !== 'null' && text !== undefined && text !== 'undefined') {
+      query(`insert into search values('${text}')`)
+      console.log('存进去了.', text)
+    }
   } catch(err) {
     log('--------此处有误--------', err)
     response.statusCode = 500

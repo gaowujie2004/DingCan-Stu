@@ -6,6 +6,14 @@ const { query } = require('../utils/mysql/mysqlPromise')
 const { log } = require('console')
 
 const router = express.Router()
+router.use((req, res, next) => {
+  if (req.session.isLogin === true) {
+    req.query.uid = req.session.uid
+    return next()
+  }
+  req.query.uid = -1
+  next()
+})
 const urlencoded = bodyParser.urlencoded({ extended: false })
 const commentStorage = multer.diskStorage({
   destination(req, file, cb) {
@@ -16,6 +24,7 @@ const commentStorage = multer.diskStorage({
   }
 })
 const commentUpload = multer({ storage: commentStorage, limits: { fileSize: 50*1024*1024 } })
+
 
 router.get('/', async(req, response) => {
   /**
@@ -37,6 +46,11 @@ router.post('/collect', async(req, response) => {
   let sid = req.query.sid
   let uid = req.query.uid
   let state = req.query.state
+
+  if (uid === -1) {
+    // -1 未登录
+    return response.send('-1') 
+  }
 
   try {
     if (state === 'true') {
@@ -63,7 +77,7 @@ router.post('/collect', async(req, response) => {
   } catch(err) {
     console.log('------------------------此处有误' ,err)
     response.statusCode = 500   // 500 是服务器错误
-    response.send('-1')
+    response.send('error')
   }
 })
 
@@ -76,6 +90,10 @@ router.post('/like', async(req, response) => {
   let sid = req.query.sid 
   let uid = req.query.uid 
   let like = req.query.like
+
+  if (uid === -1) {
+    return response.send('-1')
+  }
 
   try {
     if (like === 'true') {
@@ -132,9 +150,9 @@ router.get('/top', async(req, response) => {
     }, [])
         showList.unshift(logo)
     let commentObj = promiseAllList[2].results[0]
-    let score = Number(commentObj.avgscore.toFixed(2))
-    let commentNum = commentObj.count
-    let isLike = promiseAllList[3].results.length > 0 ? true : false
+    let score = Number(commentObj?.avgscore?.toFixed(2)) || 0
+    let commentNum = commentObj.count || 0
+    let isLike = promiseAllList[3]?.results.length > 0 ? true : false
     let isCollect = promiseAllList[4].results.length > 0 ? true : false
 
     response.send({
@@ -180,6 +198,11 @@ router.post('/order/add', async(req, response) => {
   let mid = req.query.mid
   let time = req.query.time
 
+  log('详情页', uid)
+  if (uid === -1) {
+    log(req.session)
+    return response.send('-1')
+  }
   try {
     let { results: menus } = await query(`select mname,mprice from shop_menu where mid=${mid}`)
     let mname = menus[0].mname
@@ -200,7 +223,7 @@ router.post('/order/add', async(req, response) => {
     console.log('------------------------此处有误' ,err)
     response.statusCode = 500
     response.statusMessage = 'error'
-    response.send('-1')
+    response.send('error')
   }
 })
 

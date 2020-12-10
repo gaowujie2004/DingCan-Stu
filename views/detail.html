@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>详情页</title>
     <base href="http://192.168.43.128:2021/">
-		<link rel="stylesheet" href="/public/layui-dist/css/layui.css">
-		<link rel="stylesheet" href="//at.alicdn.com/t/font_2251073_imlym8mrr4.css">
+    <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+    <!-- <link rel="stylesheet" href="/public/css/public.css"> -->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2257342_jkya4xuwro.css">
     <style>
 				.layui-m-layercont {
 					margin: 1em;
@@ -239,7 +240,6 @@
                 <div id="test9"></div>
 								<p>{{score}}分</p>
                 <p style="font-size: 12px;">({{commentNum}}人评论)</p>
-                <p style="font-size: 12px;">({{commentNum}}人评论)</p>
             </div>
             <div class="a4">
 								<img v-for="(item,index) of showList" :key="index" :src="item">
@@ -301,12 +301,11 @@
             </div>
 
         </div>
-		</div>
+        </div>
+    <script src="/public/layui-dist/layui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script src="/public/layui-dist/layui.js"></script>
-	<script src="/public/layer_mobile/layer.js"></script>
-		
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+    <script src="/public/layer_mobile/layer.js"></script>
     <script>
 			let sid = new URLSearchParams( location.search ).get('sid')
 			var vm = new Vue({
@@ -343,26 +342,35 @@
 							uid: 1,
 							like: state,
 						}
-						axios.post('/detail/like', null, { params })
+						axios.post('/detail/like', null, { params }).then(res => {
+                            if ( Number(res.data) === -1 ) {
+                                layer.open({ content:'请先登录', skin:'msg', time:1 })
+                            }
+                        })
 					},
 					collectClick() {
-						// 收藏
-						
-						let state = !this.isCollect
-						this.isCollect = state
-
+                        // 收藏
+                        let state = !this.isCollect
 						let params = {
 							sid: sid,
 							uid: 1,
 							state: state,
 						}
-						axios.post(`/detail/collect`, null, {
-							params
-						})
+						axios.post(`/detail/collect`, null, {params }).then(res => {
+                            if ( Number(res.data) === -1 ) {
+                                return layer.open({ content:'请先登录', skin:'msg', time:1 })
+                            }
+						    this.isCollect = state
+                        })
 
 					},
 					
-					reserveClick(mid) {
+					async reserveClick(mid) {
+                        let { data } = await axios.get('/other/isLogin')
+                        if ( Number(data) === 0 ) {
+                            return layer.open({ content:'请先登录', skin:'msg', time:1 })
+                        }
+                        
 						layer.open({
 							type: 1,
 							title: '预定日期',

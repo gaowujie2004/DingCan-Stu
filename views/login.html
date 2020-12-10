@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>河职 - 预定餐 - 登录</title>
   <base href="http://192.168.43.128:2021">
+  <link rel="stylesheet" href="/public/css/iconfont.css">
   <link rel="stylesheet" href="/public/css/public.css">
   <link rel="stylesheet" href="/public/css/login.css">
 </head>
@@ -15,38 +16,59 @@
     <p>在线预定餐 - 方便你我他</p>
     <div class="input-container">
       <div class="input-row">
-        <span class="icon"></span>
-        <input type="text" name="uname" v-model="uname" @focus="">
+        
+        <input type="text" name="uname" v-model="uname" @focus="" placeholder="用户名">
+        <span class="icon iconfont icon-uname"></span>
       </div>
 
       <div class="input-row">
-        <span class="icon"></span>
-        <input type="text" name="pwd" v-model="pwd" @focus="">
+        
+        <input type="password" name="upwd" v-model="upwd" @focus="" placeholder="密码">
+        <span class="icon iconfont icon-pwd"></span>
       </div>
 
-      <div class="input-row">
+      <div class="input-row" @click="loginClick">
         <p>登录</p>
       </div>
-
       <div class="input-row">
-        <p>注册</p>
+        <p onclick="location.href='/sigin'">注册</p>
+      </div>
+      <div class="input-row">
+        <p onclick="location.href='/'">首页</p>
       </div>
     </div>
 
     
   </div>
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <script src="/public/layer_mobile/layer.js"></script>
   <script>
     let app = new Vue({
       el: '#app',
       data: {
-        uname: '用户名',
-        pwd: '密码',
+        uname: '',
+        upwd: '',
       },
       methods: {
-
+        async loginClick() {
+          console.log('登录')
+          let { data } = await axios.post('/user/login', new URLSearchParams({ uname:this.uname, upwd: this.upwd }))
+          if ( Number(data) === 1 ) {
+            // OK
+            layer.open({ content:'登录成功，正在跳转首页', skin:'msg', time:1 })
+            setTimeout(() => {
+              location.href = '/'
+            }, 1000)
+          }
+          if (Number(data) === 0) {
+            layer.open({ content:'密码错误！', skin:'msg', time:1.5 })
+          }
+          if (Number(data) === -1) {
+            layer.open({ content:'此用户不存在！', skin:'msg', time:1.5 })
+          }
+        }
       }
     })
   </script>

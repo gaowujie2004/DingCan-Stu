@@ -5,8 +5,13 @@ const { log } = require('console')
 
 const router = express.Router()
 
-router.get('/', async(req, response) => {
-  response.sendFile( path.join( __dirname, '../views/profile.html' ) )
+router.use((req, res, next) => {
+  if (req.session.isLogin === true) {
+    req.query.uid = req.session.uid
+    return next()
+  }
+  req.query.uid = -1
+  next()
 })
 
 router.get('/info', async(req, response) => {
@@ -108,9 +113,12 @@ router.get('/like', async(req, response) => {
 
 router.post('/exit', async(req, response) => {
   try {
-    let uid = req.query.uid
-    //
-    response.send('退出登录成功. 即将跳转到首页'+req.ip)
+    req.session.destroy( () => {
+      log('会话销毁')
+      response.send('1')
+    })
+    
+    
   } catch(err) {
     log('-------有误-------', err)
     response.statusCode = 500

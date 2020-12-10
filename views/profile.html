@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
   <link rel="stylesheet" href="/public/css/public.css">
   <link rel="stylesheet" href="/public/css/profile.css">
-	<!-- <link rel="stylesheet" href="//at.alicdn.com/t/font_2251073_imlym8mrr4.css"> -->
 	<link rel="stylesheet" href="//at.alicdn.com/t/font_2257342_jkya4xuwro.css">
   <style>
     .iconfont {
@@ -50,6 +49,12 @@
 
       <li class="info-item p-x p-y" @click="pwdClick">
         <div class="text-cell">修改密码</div>
+        <div class="center-cell">
+        </div>
+        <div class="icon layui-icon layui-icon-right"></div>
+      </li>
+      <li class="info-item p-x p-y" @click="exitClick">
+        <div class="text-cell">退出账号</div>
         <div class="center-cell">
         </div>
         <div class="icon layui-icon layui-icon-right"></div>
@@ -204,6 +209,13 @@
             }
           })
         },
+        async exitClick(){
+          let { data } = await axios.post('/profile/exit')
+          if (Number(data) === 1) {
+            return location.href = '/'
+          }
+          layer.open({ content:'退出失败，刷新重试', skin:'msg', time:1 })
+        }
       },
 
       created(){

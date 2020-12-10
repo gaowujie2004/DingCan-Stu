@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>河职 - 预定餐 - 注册</title>
   <base href="http://192.168.43.128:2021">
+  <link rel="stylesheet" href="/public/css/iconfont.css">
   <link rel="stylesheet" href="/public/css/public.css">
   <style>
     br {
@@ -46,9 +47,14 @@
     
       display: flex;
       position: relative;
+      justify-content: center;
+
     }
     .input-row > input {
-      flex: 1;
+
+      flex: 1 1 auto;
+      font-size: 4.8vw;
+
       
       border: none;
       outline: none;
@@ -62,14 +68,16 @@
     input:focus {
       box-shadow: 0 0 8px rgba(0,0,0,.5);
     }
+    input:focus + .icon {
+      color: var(--themeColor);
+    }
     .input-row > .icon {
       position: absolute;
       width: 1em;
       height: 1em;
-      background-color: pink;
       top: 50%;
       left: 1em;
-      transform: translateY(-50%);
+      transform: translateY(-63%);
     }
     .input-row + .input-row {
       margin-top: 1em;
@@ -79,7 +87,11 @@
       visibility: hidden;
       padding-left: 1em;
 
+      padding-top: .2em;
       padding-bottom: .7em;
+    }
+    .err-tip .icon-error {
+      vertical-align: top;
     }
     .err-tip-show {
       visibility: visible;
@@ -91,7 +103,6 @@
       transform: translateY(-50%);
       right: 1em;
 
-      background-color: pink;
       width: 1em;
       height: 1em;
     }
@@ -117,43 +128,52 @@
     <p>成为用户 - 方便你我他</p>
     <div class="input-container">
       <div class="input-row">
-        <span class="icon"></span>
         <input type="text" name="uname" v-model.lazy="uname" placeholder="用户名" autocomplete="off" @blur="unameCheck">
-        <span class="ok" :class="{'ok-show': unameOk}"></span>
+        <span class="icon iconfont icon-uname"></span>
+        <span class="ok iconfont icon-ok" :class="{'ok-show': unameOk}"></span>
       </div>
-      <div class="err-tip" :class="{'err-tip-show': isUnameTipShow}">{{unameTipText || '占位'}}</div>
+      <div class="err-tip" :class="{'err-tip-show': isUnameTipShow}"><span class=" iconfont icon-error">&nbsp;</span>{{unameTipText || '占位'}}</div>
 
       <div class="input-row">
-        <span class="icon"></span>
+        
         <input type="text" name="nickname" v-model.lazy="nickname" placeholder="昵称" autocomplete="off" @blur="nicknameCheck">
-        <span class="ok" :class="{ 'ok-show':nicknameOk }"></span>
+        <span class="icon iconfont icon-nicheng"></span>
+        <span class="ok iconfont icon-ok" :class="{ 'ok-show':nicknameOk }"></span>
       </div>
-      <div class="err-tip" :class="{'err-tip-show': isNicknameTipShow}">{{nickTipText || '占位'}}</div>
+      <div class="err-tip" :class="{'err-tip-show': isNicknameTipShow}"><span class=" iconfont icon-error">&nbsp;</span>{{nickTipText || '占位'}}</div>
 
       <div class="input-row">
-        <span class="icon"></span>
+
         <input type="password" name="pwd" v-model.lazy="pwd" placeholder="密码"  autocomplete="off" @blur="pwdCheck">
-        <span class="ok" :class="{ 'ok-show': pwdOk }"></span>
+        <span class="icon iconfont icon-pwd"></span>
+        <span class="ok iconfont icon-ok" :class="{ 'ok-show': pwdOk }"></span>
       </div>
-      <div class="err-tip" :class="{'err-tip-show': isPwdTipShow}">{{pwdTipText || '占位'}}</div>
+      <div class="err-tip" :class="{'err-tip-show': isPwdTipShow}"><span class=" iconfont icon-error">&nbsp;</span>{{pwdTipText || '占位'}}</div>
 
       <div class="input-row">
-        <span class="icon"></span>
         <input type="password" v-model="verify" placeholder="确认密码"  autocomplete="off" @blur="verifyCheck">
-        <span class="ok" :class="{ 'ok-show': verifyOk }"></span>
+        <span class="icon iconfont icon-pwd"></span>
+        <span class="ok iconfont icon-ok" :class="{ 'ok-show': verifyOk }"></span>
       </div>
-      <div class="err-tip" :class="{'err-tip-show': isVerifyTipShow}">{{verifyTipText || '占位'}}</div>
+      <div class="err-tip" :class="{'err-tip-show': isVerifyTipShow}"><span class="iconfont icon-error">&nbsp;</span>{{verifyTipText || '占位'}}</div>
 
       <div class="input-row" @click="submitClick">
         <p>注册</p>
+      </div>
+      <div class="input-row" onclick="location.href='/login'">
+        <p>登录</p>
+      </div>
+      <div class="input-row" onclick="location.href='/'">
+        <p>首页</p>
       </div>
     </div>
 
     
   </div>
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+  <script src="/public/layer_mobile/layer.js"></script>
   <script>
     let app = new Vue({
       el: '#app',
@@ -172,15 +192,20 @@
       },
       methods: {
         unameCheck() {
-          console.log(this.uname.length)
           if (this.uname.length >= 6 && this.uname.length <= 12) {
             // 符合要求
-            // axios.post(`/user/sigin?uname=${this.uname}`).then(val => {
-            //   console.log('后端数据', val)
-            //   val.data === '1'
-            // })
-            this.isUnameTipShow = false
-            this.unameOk = true
+            axios.get(`/user/sigincheck?uname=${this.uname}`)
+            .then(val => {
+              this.unameOk = true
+              this.isUnameTipShow = false
+            })
+            .catch(err => {
+              console.log('error')
+              this.unameTipText = '用户名重复！'
+              this.unameOk = false
+              this.isUnameTipShow = true
+            })
+            
           } else {
             this.unameTipText = '请输入 6 - 12个字符!'
 
@@ -211,8 +236,7 @@
           }
         },
         verifyCheck() {
-          console.log('verifyCheck')
-          if (this.verify.length >= 6 && this.verify.length <= 16) {
+          if (this.verify === this.pwd) {
             this.isVerifyTipShow = false
             this.verifyOk = true
           } else {
@@ -223,12 +247,26 @@
           }
         },
         submitClick() {
-          if ( this.unameOk && this.nicknameOK && this.pwdOk && this.verifyOk ) {
-            console.log('全部符合要求')
-          } else {
-            console.log('不是 全部符合要求, 无法提交')
-            
+          if (this.unameOk && this.pwdOk && this.nicknameOk && this.verifyOk) {
+            let body = {
+              uname: this.uname,
+              unickname: this.nickname,
+              upwd: this.pwd
+            }
+            axios.post('/user/sigin', body)
+            .then(val => {
+              layer.open({ content:'注册成功！正在跳转首页', skin:'msg', time:0.8 })
+              setTimeout(() => {
+                location.href = '/'
+              }, 800)
+            })
+            .catch(err => {
+              layer.open({ content:'系统出错', skin:'msg', time:0.8 })
+              location.href = '/sigin'
+            })
+            return console.log('ok')
           }
+          console.log('不')
         },
       }
     })

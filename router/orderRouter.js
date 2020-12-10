@@ -4,8 +4,13 @@ const { query } = require('../utils/mysql/mysqlPromise')
 const { log } = require('console')
 
 const router = express.Router()
-router.get('/', (req, res) => {
-  res.sendFile( path.join(__dirname, '../views/order.html') )
+router.use((req, res, next) => {
+  if (req.session.isLogin === true) {
+    req.query.uid = req.session.uid
+    return next()
+  }
+  req.query.uid = -1
+  next()
 })
 
 router.get('/all', async(req, response) => {
