@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>预定餐 - 人气Top</title>
-  <base href="http://192.168.43.128:2021/">
+  <!-- <base href="http://192.168.43.128:2021/"> -->
   <link rel="stylesheet" href="/public/css/public.css">
   <link rel="stylesheet" href="/public//css/shopList.css">
   <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
@@ -42,7 +42,7 @@
         elem: '.shopkeeper-list',
         done(page, next) {
           let lis = []
-          $.get(`http://192.168.43.128:2021/home/reservetop?page=${page}&month=11`, datas => {
+          $.get(`/home/reservetop?page=${page}&month=11`, datas => {
             layui.each(datas.results, (index, item) => {
               lis.push(`
               <a class="shopkeeper-item m-y p-x p-y bg-white item-shadow radius-big" href="/detail?sid=${item.sid}">

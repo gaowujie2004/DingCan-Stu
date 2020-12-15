@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>河职-预定餐</title>
-  <base href="http://192.168.43.128:2021">
+  <!-- <base href="http://192.168.43.128:2021"> -->
   <link rel="stylesheet" href="/public//css/public.css">
   <link rel="stylesheet" href="/public/css/index.css">
   <link rel="stylesheet" href="/public/css/iconfont.css">
@@ -191,7 +191,7 @@
     // 热搜模块
     layui.use('jquery', function() {
       let $ = layui.jquery
-      $.get('http://192.168.43.128:2021/home/hot', datas => {
+      $.get('/home/hot', datas => {
         console.log('----热搜----', datas)
         let hotRow = document.querySelector('.hot-item-row')
         for (let data of datas) {
@@ -200,7 +200,7 @@
       });
 
       // 预定TOP
-      $.get('http://192.168.43.128:2021/home/reservetop?month=11', datas => {
+      $.get('/home/reservetop?month=11', datas => {
         console.log(datas, 'reservetop')
 
         let containerDOM = document.querySelector('.reserve-row')
@@ -232,7 +232,7 @@
         isAuto: true,
         done(page, next) {
           let lis = []
-          $.get(`http://192.168.43.128:2021/home/shoplist?page=${page}`, res => {
+          $.get(`/home/shoplist?page=${page}`, res => {
             layui.each(res.results, (index, item) => {
               let htmlStr = `
               <a class="shopkeeper-item radius-big item-shadow" href="/detail?sid=${item.sid}">
