@@ -20,10 +20,12 @@ router.get('/all', async(req, response) => {
 
   let now = new Date() / 1000    // 要转成 mysql 的基于秒的时间戳
   try { 
+
+    // 这里的  _id  应该是 订单ID  -  订单ID  和  评论表紧密相连
     let { results } = await query(`
     select
       shop_order.sid,
-      _id as id,
+      shop_order._id as id,
       mname,
       price,
       shopname,
@@ -31,14 +33,15 @@ router.get('/all', async(req, response) => {
       shop_order.time,
 
       ${now}-unix_timestamp(shop_order.time) <= 10800 as isremove,
-      temp.time as iscomment
+      shop_comment.time as iscomment
     from (
       shop_order left join shopkeeper on shop_order.sid=shopkeeper.sid left join
-      (select time, sid,uid from shop_comment group by uid,sid) as temp
-      on shop_order.sid=temp.sid and shop_order.uid=temp.uid )
+      shop_comment on shop_order._id = shop_comment._id)
     where shop_order.uid=${uid}
     order by time desc
     limit ${(page-1)*num},${num}`)
+
+    
     response.send(results)
   } catch(err) {
     log('--------此处有误-------', err)

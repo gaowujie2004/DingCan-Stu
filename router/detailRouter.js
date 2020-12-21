@@ -253,6 +253,7 @@ router.post('/order/remove', urlencoded, async(req, response) => {
   }
 })
 
+// 获取评论
 router.get('/comment', async(req, response) => {
   let sid = req.query.sid
   let page = req.query.page || 1
@@ -282,20 +283,23 @@ router.get('/comment', async(req, response) => {
   }
 })
 
+// 提交评论
 router.post('/comment', commentUpload.array('imglist', 4), async(req, response) => {
-  let sid = req.query.sid
+  let id = req.query.id            // 订单ID
+  let sid = req.query.sid 
   let uid = req.query.uid  
   let score = req.body.score 
   let content = req.body.content || ''
-  if (content.length >= 100) {
+  if (content.length >= 50) {
     response.statusCode = 400 // 客户端操作有误
-    response.send('字数过多')
+    response.send('0')
   }
 
   try {
     let imglist = req.files.map( item => path.posix.join('/public/img/comment', item.filename) )
-      imglist = JSON.stringify(imglist)
-    await query(`insert into shop_comment(sid,uid,score,content,imglist) values(${sid},${uid},${score},'${content}','${imglist}')`)
+    imglist = JSON.stringify(imglist)
+    console.log(imglist)
+    await query(`insert into shop_comment(_id,sid,uid,score,content,imglist) values(${id},${sid},${uid},${score},'${content}','${imglist}')`)
     response.send('1')
   } catch(err) {
     console.log('------------------------此处有误---', err)

@@ -31,7 +31,7 @@ const sessionOptions = {
   saveUninitialized: true,
   store: sessionStore,
   cookie: { 
-    maxAge: HOUR*10,
+    maxAge: HOUR*24,
     httpOnly: true,
     path: '/'
   }
@@ -84,6 +84,9 @@ app.get('/profile', (req, res) => {
   }
   res.redirect(302, '/login')
   
+})
+app.get('/comment', (req, res) => {
+  res.sendFile( path.join(__dirname, 'views/comment.html') )
 })
 
 

@@ -52,7 +52,7 @@
         </div>
         <div class="footer-btns m-t">
           <div class="remove btn" :class="{ 'read-only': !item.isremove }" @click="removeClick(item.id, item.isremove, index)">取消预约</div>
-          <div class="comment btn" :class="{ 'read-only': item.iscomment }" @click="commentClick(item.sid, item.iscomment)">评价</div>
+          <div class="comment btn" :class="{ 'read-only': item.iscomment }" @click="commentClick(item.sid, item.id ,item.iscomment)">评价</div>
         </div>
       </li>
     </ul>
@@ -114,20 +114,23 @@
          
         },
         
-        async commentClick(sid, isComment){ 
+        async commentClick(sid, id, isComment){ 
           /**
            * params @sid 商家id
+           * params @id  订单ID
            * params @isComment 是否评论了 如果评论了 就显示 评论日期, 没评论显示 null
           */
           if (isComment) {
             return layer.open({ content:'亲, 您已经评论过啦',  type:1, skin:'msg', time: 1.5})
           }
           
-          layer.open()
-        }
+          location.href = `/comment?sid=${sid}&id=${id}`
+        },
+
+        
       },
       created() {
-        axios.get('/order/all?uid=1').then(val => {
+        axios.get('/order/all').then(val => {
           this.orderList = val.data
           console.log(val.data)
         })

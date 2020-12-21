@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0,user-scalable=no'>
+<link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+<script src="/public/layui-dist/layui.all.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+<title>用户评论</title>
+<style>
+  body{
+    background-color: #EDE8F1;
+  }
+  .comment{
+    width: 95vw;
+    height: 33vh;
+    /* border: 1px solid black; */
+   
+  }
+
+  .nav {
+  margin-left: -4vw;
+  margin-right: -4vw;    /* 15px  375下 */
+  background-color: #fff;
+  font-size: 2.6vw;
+
+  box-shadow: 0 2px 2px rgba(0,0,0,.07);
+}
+.nav .center {
+  font-weight: 400;
+}
+
+.nav {
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+  margin-top: 0;
+
+  height: 50px;
+}
+
+.nav > .left:active {
+  transform: translate(-.5em);
+}
+.nav > .right:active {
+  transform: translate(1em);
+}
+
+.nav > .center {
+  flex: 4;
+  text-align: center;
+}
+.nav > .left,
+.nav > .right {
+  font-size: 5.333vw;
+  transition: transform .1s;
+  flex:  1 1 0;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}
+.nav > .right {
+  text-align: right;
+}
+/* 导航 - 公共样式 End */
+  .comment textarea{
+    border: 0;  
+    outline: none; 
+    resize:none;
+    width: 100%;
+    height: 100%;
+  }
+  .linecenter{
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    margin-bottom: 1vh;
+  }
+  .linecenters{
+    height: 45px;
+    line-height: 45px;
+    font-size: 16px;
+  }
+  .size{
+    font-size: 16px;
+    height: 50px;
+    /* line-height: 47px; */
+    /* color: red; */
+  }
+  .btn{
+    background-color: red;
+    color: white;
+    margin-top: 1vh;
+    font-size: 13px;
+    font-weight: 700;
+    position: relative;
+    bottom: -18vh;
+    /* left: 4vw; */
+  }
+  .camera{
+    border: 1px dashed #BDC1C4;
+    width: 16vw;
+    height: 16vw;
+    text-align: center;
+    /* line-height: 15vw; */
+    display: inline-block;
+    padding: 1vw;
+  }
+  .colors{
+    background-color: white;
+  }
+</style>
+</head>
+<body>
+<div class="colors">
+  <div class="layui-container">
+    <div class="nav m-b">
+      <a href="/order?pid=1" class="left layui-icon layui-icon-left"></a>
+      <h1 class="center">人气榜</h1>
+      <div class="right layui-icon layui-icon-refresh-1" onclick="location.reload(true)"></div>
+    </div>
+    <div class="layui-row">
+      <div class="layui-col-xs3 linecenter" style="border-top: 1px solid #DADCE0;border-bottom: 1px solid#DADCE0;">综合评分:</div><div id="test1" class="layui-col-xs9 size" style="border-top: 1px solid #DADCE0;border-bottom: 1px solid#DADCE0;"></div>
+      <div class="layui-col-xs12"  onclick="wkf()" style="background-color:#FADB7B; height: 30px;line-height: 30px;padding-left: 4px;"><span style="color: red;">50</span>字以上+<span style="color: red;">3</span>图片/视频，有机会入选行家心得</div>
+      <form method="post" enctype="multipart/form-data">
+       <div class="comment">
+        <textarea name="content" id="" placeholder="请输入您的评论"></textarea>
+       </div>    
+       <div class="layui-col-xs12">
+        <div class="camera" onclick="file()"><div><i class="layui-icon layui-icon-camera" style="font-size: 38px;;"></i></div><div style=" font-size: 12px;">添加图片</div></div>
+         <input onchange="fileChange()"  style="display: none;" class="File" type="file" name="imglist" style="display: none;" multiple>
+         <button class="btn" type="button" style="width: 100%;height: 40px;border: 0px;border-radius: 3px;">提交评价</button>
+       </div>  
+      </form>
+    </div>
+  </div>
+</div>
+<!-- <div style="width: 100vw;height: 3vh;border: 1px solid #BDC1C4; padding: 1vh;display: flex;color: #999999;" onclick="wkf()">
+  <div style="border-radius: 50%;width: 2vh;height: 2vh;text-align: center;line-height: 2vh;padding: 2px;background-color: red;"><i class="layui-icon layui-icon-ok" style="font-size: 12px; color: white;font-weight: 700;"></i></div>
+  <div>将此评论同步到订小圈&#x3000;</div>
+  <div style="width: 33%;margin-left: 28%;border-left: 1px solid #999999;">&#x3000;@提醒谁看&#x3000;<i class="layui-icon layui-icon-right" style="font-size: 14px; color: #999999;font-weight: 700;"></i></div>
+</div> -->
+<script>
+   var btn = document.getElementsByClassName("btn")[0];
+   var text=document.getElementsByTagName("textarea")[0];
+   var form=document.querySelectorAll("form")[0];
+   var span=document.querySelectorAll(".span")[0];
+  layui.use('rate', function(){
+    var rate = layui.rate;
+    var ins1 = rate.render({
+      elem: '#test1',  //绑定元素
+      setText: function(value){
+    var arrs = {
+      '0':" "
+      ,'0.5':'极差'
+      ,'1': '极差'
+      ,'1.5':'差'
+      ,'2': '差'
+      ,'2.5': '一般'
+      ,'3':'一般'
+      ,'3.5': '满意'
+      ,'4':'满意'
+      ,'4.5': '非常满意'
+      ,'5':'非常满意'
+    };
+    this.span.text(arrs[value] || ( value + "星"));
+  },
+      half: 'true',
+      text: 'true',
+      theme: 'red',
+      choose: function(value){
+       console.log("您给了"+value)
+       
+       btn.onclick = function(){
+          let queryStr = location.search
+          // 为什么不用 uid,  因为顾客登录
+
+          let formData = new FormData(document.querySelector('form'))
+          formData.set('score', value)
+
+          axios
+            .post(`/detail/comment${queryStr}`, formData)
+            .then(val => {
+              if (Number(val.data) === 1) {
+                layer.msg('评论成功!, 正在跳转首页')
+                setTimeout(() => {
+                  location.href = '/order?pdi=1'
+                }, 700)
+              }
+            })
+            .catch(err => {
+              console.log('err-----评论提交失败', err)
+              layer.msg('评论提交失败, 请稍后重试')
+            })
+       }
+       
+  }
+    });
+  })
+  btn.onclick=function(){
+    alert("请给打星")
+    
+  }
+  function file(){
+    document.querySelectorAll(".File")[0].click()
+  }
+  function wkf(){
+    alert("评论后商家可能会奖励")
+  }
+  function fileChange() {
+    layer.msg('图片上传完毕, 请提交评论')
+  }
+</script>
+</body>
+</html>
