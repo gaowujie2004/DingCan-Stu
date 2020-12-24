@@ -111,19 +111,74 @@ input:focus {
 .cate-item:nth-child(1) {
   margin-bottom: 1.8em;
 }
+
 .cate-item {
   flex: 1 1 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  /* 自助餐 */
+  --blurGradient: linear-gradient(to bottom, #19efe7, #1a9de1); 
+
+  /* 冬至饺子 */
+  --orangeGradient: linear-gradient(to bottom, #fac30e, #f64f02);
+
+  /* 火锅 */
+  --hotGradient: linear-gradient(to bottom, #ef8aaa, #f64f02);
+
+  /* 定座 */
+  --greenGradient: linear-gradient(to bottom, #adfd09, #0bb751);
 }
+
+.cate-item:nth-child(1) .cate-icon,
+.cate-item:nth-child(7) .cate-icon,
+.cate-item:nth-child(8) .cate-icon {
+  background-image: var(--hotGradient);
+}
+
+.cate-item:nth-child(2) .cate-icon,
+.cate-item:nth-child(4) .cate-icon,
+.cate-item:nth-child(5) .cate-icon,
+.cate-item:nth-child(9) .cate-icon {
+  background-image: var(--orangeGradient);
+}
+
+.cate-item:nth-child(3) .cate-icon {
+  background-image: var(--greenGradient);
+}
+
+.cate-item:nth-child(6) .cate-icon,
+.cate-item:nth-child(10) .cate-icon {
+  background-image: var(--blurGradient);
+}
+
 .cate-icon {
+  box-shadow: 0 0 5px rgba(0,0,0,.05) inset;
+  position: relative;
   text-align: center;
-  width: 30px;
-  height: 30px;
+  width: 12vw;
+  height: 12vw;
+  border-radius: 50%;
+  line-height: 12vw;
+  color: white;
 }
+.cate-icon::after {
+  /* content: "";
+  position: absolute;
+  left: 1px; right: 1px;
+  top: 1px; bottom: 1px;
+
+  background-image: inherit;
+  border-radius: 50%;
+  z-index: -2;
+  filter: blur(1px); */
+}
+
+
+
 .cate-item > p {
-  margin-top: .2em;
+  margin-top: 1em;
 }
 /* 分类 End */
 

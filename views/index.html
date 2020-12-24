@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>河职-预定餐</title>
-  <!-- <base href="http://192.168.43.128:2021"> -->
   <link rel="stylesheet" href="/public//css/public.css">
   <link rel="stylesheet" href="/public/css/index.css">
   <link rel="stylesheet" href="/public/css/iconfont.css">
@@ -27,16 +26,24 @@
       height: 26.666vw;
       width: 100%;
     }
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+  
     .swiper-pagination-bullet {
       transition: width .5s;
       border-radius: 100vw;
       width: 1.2vw;
       height: 1.2vw;
-      background-color: rgba(0,0,0,1);
-      opacity: .3;
+      background-color: #fff;
+      opacity: .4;
     }
     .swiper-pagination-bullet-active {
-      background-color: rgba(0,0,0,.4);
+      background-color: #fff;
       width: 7.5vw;
       opacity: .7;
     }
@@ -46,6 +53,7 @@
     .shopkeeper-item:active {
       background-color: #ddd;
     }
+     
 
 
   </style>
@@ -181,6 +189,13 @@
     </div>
   </div>
   <!-- tab-bar End -->
+
+  <!-- 返回顶部 Start -->
+  <div class="return-top">
+
+  </div>
+  <!-- 返回顶部 End -->
+
   <script>
     let pid = Number( location.search.slice(1).split('=')[1] )
     document.querySelectorAll('.tab-bar > div')[pid].classList.add('tab-bar-click')
@@ -200,7 +215,7 @@
       });
 
       // 预定TOP
-      $.get('/home/reservetop?month=11', datas => {
+      $.get('/home/reservetop?month=12', datas => {
         console.log(datas, 'reservetop')
 
         let containerDOM = document.querySelector('.reserve-row')

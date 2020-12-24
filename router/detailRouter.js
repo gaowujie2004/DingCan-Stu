@@ -32,7 +32,7 @@ router.get('/', async(req, response) => {
   */
   let sid = req.query.sid
   try {
-    response.sendFile( path.join(__dirname, '../views/detail.html') )
+    response.sendFile( path.join(__dirname, '../views/detail2.html') )
     query(`insert into shop_browser(sid) values(${sid})`)
   } catch(err) {
     // console.log('------------------------此处有误' ,err)

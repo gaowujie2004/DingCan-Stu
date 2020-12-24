@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/public/css/iconfont.css">
+    <link rel="stylesheet" href="/public/layui-dist/css/layui.css">
+    <style>
+        .layui-m-layercont {
+            margin: 1em;
+            font-size: 14px;
+        }
+        [v-cloak] {
+            visibility: hidden;
+        }
+        img {
+            box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+        }
+
+        .a {
+            background-image: url('1.jpg');
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+
+        .a1 {
+            margin: 20px;
+            height: 50px;
+            margin-top: 0;
+        }
+
+        .a1>div {
+            font-size: 27px;
+            float: right;
+            margin: 18px;
+        }
+
+        .a2 {
+            background-color: white;
+            margin: 0px 15px 15px 15px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .a2::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: 5px;
+            margin-right: 5px;
+            height: 100px;
+            border-radius: 10px;
+            top: -7px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            z-index: -1;
+        }
+
+        .a2>h1 {
+            font-size: 30px;
+            margin: 0px 15px;
+            line-height: 45px;
+            padding-top: 10px;
+        }
+
+        .a3 {
+            display: flex;
+            justify-content: flex-start;
+            margin: 0px 15px;
+        }
+
+        .a3>p {
+            height: 22px;
+            line-height: 25px;
+            font-size: 16px;
+            padding: 10px 3px;
+            margin: 10px 0;
+        }
+
+        .a3>div {
+            margin: 10px 0;
+        }
+
+        .a3>div>ul {
+            padding: 10px 3px;
+        }
+
+        .a4 {
+            height: 110px;
+            overflow-x: auto;
+            display: flex;
+            margin: 0 15px;
+        }
+        img {
+            border-radius: 5px;
+        }
+        .a4>img {
+            flex: 0 0 auto;
+            width: 100px;
+            height: 70px;
+            margin: 10px 3px;
+            display: inline-block;
+
+            filter: drop-shadow(0px 0px 1px rgba(0,0,0,.15));
+            border-radius: 5px;
+        }
+
+        .a5>div>div {
+            width: 100%;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .a5>div>p {
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .a5>div {
+            width: 80px;
+            margin: 0 auto;
+        }
+
+        .a5>p {
+            width: 120px;
+            float: left;
+            font-size: 16px;
+            height: 50px;
+            line-height: 50px;
+            margin-left: 30px;
+        }
+
+        .a6 {
+            background-color: white;
+            margin: 0px 15px 15px 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .a6>div>ul>li {
+            min-width: 30px;
+            padding: 0 10px;
+            font-size: 19px;
+        }
+
+        .a6>div>ul {
+            text-align: center;
+            padding: 0;
+        }
+
+        .a7 h2 {
+            margin: 0 0 10px 0;
+            line-height: 40px;
+        }
+
+        .a7>div {
+            margin: 25px 10px;
+            position: relative;
+            display: flex;
+        }
+
+        .a7>div>img {
+            width: 100px;
+            height: 100px;
+            float: left;
+        }
+
+        .a7>div>div {
+            float: left;
+            margin: 0 10px;
+        }
+
+        .a7>div>div>div>p {
+            margin-top: 3px;
+        }
+
+        .a8 {
+            margin-top: 7px;
+            color: red;
+            font-size: 20px;
+        }
+
+        #a9 {
+            margin: 35px 10px;
+            position: absolute;
+            right: 1px;
+        }
+
+        .b1 {
+            background-color: white;
+            margin: 0px 15px 15px 15px;
+            border-radius: 10px;
+        }
+
+        .b1>h1 {
+            margin: 0px 20px;
+            height: 70px;
+            line-height: 70px;
+        }
+
+        .b2>div {
+            margin: 30px 0 30px 10px;
+            font-size: 11px;
+            padding: 0 13px;
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .b3 {
+            overflow: hidden;
+            margin: 3vw;
+            margin-bottom: 25px;
+        }
+
+        .b3>div>img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .b3>div {
+            float: left;
+            width: 100%;
+        }
+
+        .b3>div>div {
+            width: 250px;
+            overflow: hidden;
+        }
+
+        .b3 .uimg {
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+
+        .b3 .comment-content {
+            margin-top: 2em;
+            display: -webkit-box;
+            display: -moz-box;
+
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+
+            overflow: hidden;
+            /* width: 100%; */
+        }
+
+        .test>ul>li>i {
+            font-size: 10px;
+        }
+
+        .test>ul>li {
+            width: 14px;
+        }
+
+        .test>ul {
+            padding: 8px 5px 8px 0;
+        }
+
+        .b4 {
+            margin-top: 10px;
+           
+        }
+        #b4{
+            overflow-x: auto;
+            display: flex;
+        }
+        .b4>img {
+            width: 80px;
+            height: 70px;
+            flex: 0 0 auto;
+            margin-left: 5px;
+            border-radius: 3px;
+        }
+
+        .b5 {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            width: 100%;
+        }
+        .b5>p{
+            margin-left: 9px;
+        }
+        #b6 {
+            display: flex;
+            flex-direction: column;
+            padding-left: 60px;
+        }
+
+        #b6>div {
+            width: 250px;
+        }
+
+        .b7 {
+            display: flex;
+        }
+        .b8{
+            margin-top: 20px;
+            font-size: 10px;
+            font-weight: 100;
+        }
+        .b8>span{
+            font-size: 16px;
+        }
+        .b9{
+            color: #777;
+            font-size: 14px;
+        }
+        .b10{
+            width: 150px;  
+        }
+        
+        .b10>h2{
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+        }
+        .clearfloat:after {
+            content: "";
+            height: 0;
+            line-height: 0;
+            display: block;
+            visibility: hidden;
+            clear: both;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="a" id="app" ref="app" :style="backdropStyle">
+        <div class="layui-icon a1">
+            <div class="layui-icon-left" style="float: left;" onclick="location.href='/'"></div>
+            <div :class="{ 'layui-icon-rate': !isCollect, 'layui-icon-rate-solid': isCollect }" @click="collectClick">
+            </div> <!-- 收藏 -->
+            <div class="iconfont" :class="{ 'icon-like': !isLike, 'icon-like-fill': isLike }" @click="likeClick"></div>
+            <!-- 是否点赞-->
+        </div>
+        <div class="a2" id="a2" v-cloak>
+            <h1>{{shopName}}</h1>
+            <div class="a3">
+                <div id="test9"></div>
+                <p>{{score}}分</p>
+                <p style="font-size: 12px;">({{commentNum}}人评论)</p>
+            </div>
+            <div class="a4">
+                <img v-for="(item,index) of showList" :src="item">
+            </div>
+            <div class="a5 clearfloat">
+                <div class="layui-icon b11">
+                    <div class="layui-icon-location" style="padding-bottom: 1.8666vw;"></div>
+                    <p>{{canteen}}餐厅</p>
+                </div>
+            </div>
+        </div>
+        <div class="a6">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">菜单</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show a7">
+                        <div v-for="(item,index) of menuList">
+                            <img :src="item.mimg" alt="">
+                            <div class="b10">
+                                <h2>{{item.mname}}</h2>
+                                <div>
+                                    <p>{{item.mprice}} 元</p>
+                                </div>
+                            </div>
+                            <div class="layui-btn layui-btn-danger" id="a9" @click="reserveClick(item.mid)">预定</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="b1">
+            <h1>评论</h1>
+            <div class="b2">
+                <div class="layui-btn layui-btn-radius layui-btn-warm">全部({{comment.total}})</div>
+                <div class="layui-btn layui-btn-radius layui-btn-primary">好评({{comment.good}})</div>
+                <div class="layui-btn layui-btn-radius layui-btn-primary">一般({{comment.middle}})</div>
+                <div class="layui-btn layui-btn-radius layui-btn-primary">差评({{comment.bad}})</div>
+            </div>
+            <!-- b3 是项目 循环 -->
+            <div class="b3" v-for="(item,index) of commentList" :key="index" v-if="item">
+                <div class="b7">
+                    <img :src="item.uimg" alt="" class="uimg">
+                    <div>
+                        <div class="b5">
+                            <p>{{item.unickname}}</p>
+                            <p class="b9">{{item.time}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="b6">
+                    <div>{{item.content}}</div>
+                    <div class="b4" id="b4">
+                        <img v-for="(src,index) of item.imglist" :src="src" :key="index">
+                    </div>
+                    <div class="b8" v-if="item.response">
+                        商家回应:
+                        <span>{{item.response}}</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <script src="/public/layui-dist/layui.js"></script>
+    <script src="/public/layer_mobile/layer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.js"></script>
+    <script>
+
+        let sid = new URLSearchParams(location.search).get('sid')
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                isCollect: '', // 是否 收藏
+                isLike: '', // 是否点赞
+                shopName: '',
+                score: '',
+                commentNum: '',
+                canteen: '',
+                showList: '',
+
+                menuList: '',
+                reserveTime: '',
+                currentMid: '', //点击的餐
+
+                commentList: '',
+                comment: {
+                    total: 0,
+                    good: 0,
+                    middle: 0,
+                    bad: 0,
+                }
+            },
+            methods: {
+                likeClick() {
+                    // 点赞
+                    let state = !this.isLike
+                    this.isLike = state
+
+                    let params = {
+                        sid: sid,
+                        uid: 1,
+                        like: state,
+                    }
+                    axios.post('/detail/like', null, { params })
+                },
+                collectClick() {
+                    // 收藏
+
+                    let state = !this.isCollect
+                    this.isCollect = state
+
+                    let params = {
+                        sid: sid,
+                        uid: 1,
+                        state: state,
+                    }
+                    axios.post(`/detail/collect`, null, {
+                        params
+                    })
+
+                },
+
+                async reserveClick(mid) {
+                    let { data } = await axios.get('/other/isLogin')
+                    if ( Number(data) === 0 ) {
+                        return layer.open({ content:'请先登录', skin:'msg', time:1 })
+                    }
+                    layer.open({
+                        type: 1,
+                        title: '预定日期',
+                        content: `<input id="reserve-time" placeholder="点击选择预定时间">`,
+                        btn: ['确定', '取消'],
+                        className: 'test-layer',
+
+                        success(el) {
+                            console.log('success', el)
+                        },
+                        yes(index) {
+                            console.log('点击了 确定')
+                            layer.close(index)
+
+                            let params = {
+                                sid: sid,
+                                uid: 1,
+                                mid: mid,
+                                time: vm.reserveTime
+                            }
+
+                            let loadIndex = layer.open({
+                                type: 2,
+                                content: '预定中'
+                            })
+                            axios.post('/detail/order/add', null, { params })
+                                .then(val => {
+                                    layer.close(loadIndex)
+                                    layer.open({
+                                        content: `预定成功 ${vm.reserveTime}!`,
+                                        btn: '我知道了'
+                                        // time: 2000
+                                    })
+                                })
+                                .catch(err => {
+                                    layer.close(loadIndex)
+                                })
+                        },
+                        no(index) {
+                            console.log('点击了 取消')
+                        }
+                    })
+
+
+                    let addDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+                    setTimeout(() => {
+                        layui.use('laydate', function () {
+                            let layDate = layui.laydate
+                            let res = layDate.render({
+                                position: 'fixed',
+                                elem: '#reserve-time',
+                                type: 'datetime',
+                                format: 'yyyy-MM-dd HH:mm:ss',
+                                value: addDate.toLocaleString('chinese', { hour12: false }).replace(/\//g, '-'),
+                                isInitValue: true,
+                                show: true,
+                                ready(date) {
+                                    console.log('控制初始化', date)
+                                },
+                                change(value, date, endDate) {
+                                    if (date.date <= new Date().getDate()) {
+                                        res.hint('不能选择今日时间')
+                                    }
+                                },
+                                done: value => {
+                                    console.log('完成了', value)
+                                    vm.reserveTime = value
+                                }
+                            })
+                        })
+                    }, 200)
+                }
+            },
+            computed: {
+                backdropStyle() {
+                    return {
+                        'backgroundImage': `url('/public/img/default.jpg')`,
+                        'fontSize': '20px'
+                    
+                    }
+                }
+            },
+            beforeCreate() {
+                // 在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。
+            },
+            async created() {
+                // data props months 都有数据了.  但 el 还没有被挂载
+                // /detail/top?sid=xxxxx & uid=xxxx
+
+                let params = {
+                    sid: sid,
+                    uid: 1
+                }
+                let { data } = await axios.get(`/detail/top`, { params })
+                let { data: menu } = await axios.get('/detail/menu', { params })
+                let { data: comment } = await axios.get('/detail/comment', { params })
+
+
+                this.isLike = data.isLike
+                this.isCollect = data.isCollect
+                this.shopName = data.shopName
+                this.score = data.score
+                this.commentNum = data.commentNum
+                this.showList = data.showList
+                this.canteen = data.canteen
+
+                this.menuList = menu
+
+                this.commentList = comment.list
+                this.comment.total = comment.total
+                this.comment.good = comment.good
+                this.comment.middle = comment.middle
+                this.comment.bad = comment.bad
+
+                document.title = this.shopName
+
+                layui.use(['rate'], function () {
+                    let rate = layui.rate;
+                    //只读
+                    rate.render({
+                        elem: '#test9'
+                        , value: vm.score
+                        , readonly: true
+                    })
+                });
+            },
+            beforeUpdate() {
+                // console.log('数据更新之前')
+            },
+        });
+        // 1. 商家评分星星 评论的不用星星
+        // 2. 菜多加一些
+        // 3. 评论也多加一些，  需要商家回复。 
+        layui.use(['rate'], function () {
+            var rate = layui.rate;
+            //只读
+            rate.render({
+                elem: '#test9'
+                , value: 4
+                , readonly: true
+            });
+        });
+
+
+
+    </script>
+</body>
+
+</html>

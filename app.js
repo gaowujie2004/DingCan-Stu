@@ -27,8 +27,8 @@ const sessionStore = new mysqlStore(sessionMysqlOptions)
 const sessionOptions = {
   secret: 'haah BBB',
   key: 'gwj_sid',
-  resave: false,
-  saveUninitialized: true,
+  resave: true,
+  saveUninitialized: false,
   store: sessionStore,
   cookie: { 
     maxAge: HOUR*24,
@@ -87,6 +87,9 @@ app.get('/profile', (req, res) => {
 })
 app.get('/comment', (req, res) => {
   res.sendFile( path.join(__dirname, 'views/comment.html') )
+})
+app.get('/detail2', (req,res) => {
+  res.sendFile( path.join(__dirname, 'views/detail2.html') )
 })
 
 
