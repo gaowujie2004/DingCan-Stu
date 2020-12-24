@@ -43,6 +43,8 @@ const sessionOptions = {
 app.use(cors)
 app.use(cookieParser())
 app.use(session(sessionOptions))
+
+app.use('/public/img', express.static( path.join(__dirname, '../DIngCan-Public/img') ))
 // 局部中间件
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
