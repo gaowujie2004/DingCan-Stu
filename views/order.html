@@ -24,6 +24,12 @@
     .iconfont {
       font-size: 6.4vw;
     }
+    img {
+      object-fit: cover;
+            object-position: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+            border-radius: 10px;
+    }
   </style>
 </head>
 <body>
@@ -39,7 +45,7 @@
         <div class="shop-name">{{item.shopname}}</div>
         <div class="main">
           <div class="img">
-            <img :src="item.img || '/public/img/default.jpg'" alt="">
+            <img :src="item.mimg" alt="">
           </div>
           <div class="content">
             <div class="menu-name">{{item.mname}}</div>

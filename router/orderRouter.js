@@ -26,17 +26,19 @@ router.get('/all', async(req, response) => {
     select
       shop_order.sid,
       shop_order._id as id,
-      mname,
+      shop_menu.mname,
       price,
       shopname,
       scanteen as canteen ,
       shop_order.time,
+      mimg,
 
       ${now}-unix_timestamp(shop_order.time) <= 10800 as isremove,
       shop_comment.time as iscomment
     from (
       shop_order left join shopkeeper on shop_order.sid=shopkeeper.sid left join
-      shop_comment on shop_order._id = shop_comment._id)
+      shop_comment on shop_order._id = shop_comment._id left join
+      shop_menu on shop_order.mid = shop_menu.mid)
     where shop_order.uid=${uid}
     order by time desc
     limit ${(page-1)*num},${num}`)

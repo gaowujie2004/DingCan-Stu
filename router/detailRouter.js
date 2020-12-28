@@ -32,7 +32,7 @@ router.get('/', async(req, response) => {
   */
   let sid = req.query.sid
   try {
-    response.sendFile( path.join(__dirname, '../views/detail2.html') )
+    response.sendFile( path.join(__dirname, '../views/detail3.html') )
     query(`insert into shop_browser(sid) values(${sid})`)
   } catch(err) {
     // console.log('------------------------此处有误' ,err)
@@ -257,20 +257,19 @@ router.post('/order/remove', urlencoded, async(req, response) => {
 router.get('/comment', async(req, response) => {
   let sid = req.query.sid
   let page = req.query.page || 1
-  let num = req.query.num || 50
+  let num = req.query.num || 100
 
   try {
-    let { results } = await query(`select unickname,uimg,imglist,score,content,time,response from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid} limit ${(page-1)*num}, ${num}`)
+    let { results } = await query(`select unickname,uimg,imglist,score,content,time,response from (shop_comment left join user on shop_comment.uid=user.uid) where sid=${sid} order by time desc limit ${(page-1)*num}, ${num}`)
     let { results: counts } = await query(`select count(*) as total,sum(score>=4) as good,sum(score>=2 and score<4) as middle,sum(score>=0 and score<2) as bad from shop_comment where sid=${sid}`)
     let { total, good, middle, bad } = counts[0]
+
     for (let resultRow of results) {  // 此循环是用来做 参评人数的功能
       if (resultRow.imglist===null || resultRow.imglist.length ===2) {  // "[]"
         resultRow.imglist = null
       } else {
         resultRow.imglist = JSON.parse(resultRow.imglist)
       }
-      let time = resultRow.time
-      resultRow.time = new Date(time).toLocaleString('chinese', { hour12: false })
     }
 
     response.send({ total, good, middle, bad, list: results })

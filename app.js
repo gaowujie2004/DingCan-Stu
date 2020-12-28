@@ -108,6 +108,6 @@ app.use((req,res,next) => {
   res.sendFile( path.join(__dirname, 'views/404.html') )
 })
 
-app.listen(2021, () => {
-  log('2021 端口开启成功')
+app.listen(80, () => {
+  log('80 端口-顾客端')
 })
