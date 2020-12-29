@@ -30,6 +30,10 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, .2);
             border-radius: 10px;
     }
+
+    .order-item:active {
+      background-color: #ccc;
+    }
   </style>
 </head>
 <body>
@@ -43,7 +47,7 @@
     <ul class="order-container" v-cloak>
       <li class="order-item p-x p-y radius-big item-shadow m-y" v-for="(item,index) of orderList" :key="index">
         <div class="shop-name">{{item.shopname}}</div>
-        <div class="main">
+        <div class="main" @click="toDetail(item.sid)">
           <div class="img">
             <img :src="item.mimg" alt="">
           </div>
@@ -132,7 +136,9 @@
           
           location.href = `/comment?sid=${sid}&id=${id}`
         },
-
+        toDetail(sid) {
+          location.href = `/detail?sid=${sid}`
+        }
         
       },
       created() {

@@ -19,7 +19,7 @@ router.post('/login',txt,function(req,res){
 					// 没有这个账号 
 					res.send('-1')
 				} else {
-          console.log(data)
+  
 					if(uname===data[0].uname && upwd===data[0].upwd){
               // OK
               req.session.isLogin = true

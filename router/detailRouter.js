@@ -17,13 +17,16 @@ router.use((req, res, next) => {
 const urlencoded = bodyParser.urlencoded({ extended: false })
 const commentStorage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, path.join(__dirname, '../public/img/comment'))
+    cb(null, path.join(__dirname, '../../DIngCan-Public/img/comment') )
+    console.log('评论图片 存放地址', path.join(__dirname, '../../DIngCan-Public/img/comment'))
+    // console.log(path.join(__dirname, '../../DIngCan-Public/img/comment'))
+
   },
   filename(req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname))
   }
 })
-const commentUpload = multer({ storage: commentStorage, limits: { fileSize: 50*1024*1024 } })
+const commentUpload = multer({ storage: commentStorage, limits: { fileSize: 20*1024*1024 } })
 
 
 router.get('/', async(req, response) => {
@@ -198,7 +201,6 @@ router.post('/order/add', async(req, response) => {
   let mid = req.query.mid
   let time = req.query.time
 
-  log('详情页', uid)
   if (uid === -1) {
     log(req.session)
     return response.send('-1')
@@ -297,9 +299,12 @@ router.post('/comment', commentUpload.array('imglist', 4), async(req, response) 
   try {
     let imglist = req.files.map( item => path.posix.join('/public/img/comment', item.filename) )
     imglist = JSON.stringify(imglist)
-    console.log(imglist)
+
+  
     await query(`insert into shop_comment(_id,sid,uid,score,content,imglist) values(${id},${sid},${uid},${score},'${content}','${imglist}')`)
     response.send('1')
+    console.log(imglist)
+
   } catch(err) {
     console.log('------------------------此处有误---', err)
     response.statusCode = 500

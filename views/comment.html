@@ -187,10 +187,12 @@
             .post(`/detail/comment${queryStr}`, formData)
             .then(val => {
               if (Number(val.data) === 1) {
-                layer.msg('评论成功!, 正在跳转首页')
+                layer.msg('评论成功!, 正在跳转')
                 setTimeout(() => {
                   location.href = '/order?pdi=1'
                 }, 700)
+              } else {
+                layer.msg('遇到未知错误, 请稍后重试')
               }
             })
             .catch(err => {

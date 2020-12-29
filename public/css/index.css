@@ -10,7 +10,7 @@
   justify-content: space-between;
 }
 :placeholder-shown {
-  /* font-size: var(--smallSize); */
+  font-size: var(--smallSize);
   color: var(--simpleColor);
   padding-left: 1em;
 }
@@ -239,7 +239,7 @@ input:focus {
 
 /* 商家列表 Start */
 .shopkeeper-list {
-  padding-bottom: 50px;
+  padding-bottom: 13.333vw;
 }
 .shopkeeper-item {
   display: flex;
@@ -322,7 +322,7 @@ input:focus {
 /* 商家列表 End */
 
 /* Tab-Bar Start */
-.tab-bar {
+/* .tab-bar {
   font-size: var(--normalSize);
 
   margin: 0;
@@ -353,4 +353,4 @@ input:focus {
 .tab-bar > div:active {
   transform: scale(0.85);
 }
-/* Tab-Bar End */
+Tab-Bar End */

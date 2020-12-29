@@ -54,7 +54,7 @@ app.get('/', (req, res, next) => {
   res.sendFile( path.join(__dirname, 'views/index.html') )
 })
 app.get('/login', (req, res) => {
-  res.sendFile( path.join(__dirname, 'views/login.html') )
+  res.sendFile( path.join(__dirname, 'views/login2.html') )
 })
 app.get('/sigin', (req, res) => {
   res.sendFile( path.join(__dirname, 'views/sigin.html') )
