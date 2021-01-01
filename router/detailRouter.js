@@ -213,7 +213,7 @@ router.post('/order/add', async(req, response) => {
     let { results: users } = await query(`select unickname from user where uid=${uid}`)
     let uname = users[0].unickname
     
-    let { results } = await query(`insert into shop_order(sid,uid,mid,mname,uname,price) values(${sid},${uid},${mid},'${mname}','${uname}',${price})`)
+    let { results } = await query(`insert into shop_order(sid,uid,mid,mname,uname,price,time) values(${sid},${uid},${mid},'${mname}','${uname}',${price}, '${time}')`)
     if (results.affectedRows > 0) {
       response.send('1')
     } else {
